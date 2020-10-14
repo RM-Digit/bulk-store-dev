@@ -1,0 +1,82 @@
+<script type="text/javascript" src="{{ 'carousel.js' | asset_url }}" async defer> </script>
+
+{% assign number_of_products = all %}
+{% assign number_of_products_to_fetch = number_of_products | plus: 1 %}
+
+{% for thisCollection in collections %}
+
+{% if thisCollection.handle == 'our-best-sellers' %}
+{% assign found_a_collection = true %}
+{% assign collection = thisCollection %}
+{% endif %}
+{% endfor %}
+
+{% if collection and collection.products_count > 1 %}
+
+<div class="bulk-section-header-wrapper">
+    <div class="bulk-section-header-wrapper">
+        <div class="bulk-section-header">
+            {{ collection.title }}
+        </div>
+        <div class="bulk-section-header-line"></div>
+    </div>
+</div>
+
+<div class="grid-uniform grid-link__container" style="position: relative; top:-50px;">
+    {% assign current_product = collection.products.first %}
+    {% assign current_product_found = false %}
+
+
+    {% assign grid_item_width = 'large--one-quarter medium--one-quarter small--one-half' %}
+
+    <div class="ccarousel"><!-- custom carousel starts-->
+        <input type="hidden" class="totalprod" value="30">
+
+        <button class="btn2"><img src="{{ 'caretLeft.png' | asset_url  }}" height="120px" width="50px"></button>
+
+        <div class="mainn">
+            <ul class="inner" style="padding-left: 10px; ">
+
+
+
+                {% for product in collection.products %}
+             	 {% if forloop.index < 10 %}
+                <li>
+                    <a href="{{ product.url | within: collection }}" >
+
+                        <div class="item-display-box" style="top:0px; position: relative;">
+                            <div class="item-display-box-image" style="min-height:50px; background-image:url({{ product | img_url: 'medium' }});">
+
+                                <!--<img src="{{ product.featured_image | img_url: 'medium' }}" style="opacity: 0;"/>-->
+
+                                <div class="red-circle item-display-box-circle">
+                                    <i class="fa fa-plus white-plus"></i>
+                                </div>
+                            </div>
+                            <div class="product-display-box-title">{{ product.title }}</div>
+                            <div class="product-display-box-price">Starts at {{ product.price | money }}</div>
+                        </div>
+
+
+
+                    </a>
+                </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+        </div>
+
+        <button class="btn1"><img src="{{ 'caretRight.png' | asset_url  }}" height="120px" width="50px"></button>
+    </div><!-- custom carousel ends-->
+
+</div>
+{% endif %}
+
+<script>
+    $(".item-display-box").each(function () {
+        $(this).css('max-height', $(this).width() + 150)
+    });
+    $(".item-display-box-image").each(function () {
+        $(this).css('height', $(this).width() * 1)
+    });
+</script>

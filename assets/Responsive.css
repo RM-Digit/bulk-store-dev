@@ -1,0 +1,322 @@
+@media only screen and (min-width: 996px) and (max-width:1024px) {
+    .header-bar__search-submit {
+        right:25px
+    }
+
+    .left-features.left-image,.right-features.right-image {
+        height: auto!important
+    }
+
+    .mainn {
+        width: 70%!important
+    }
+
+    .btn1,.btn2 {
+        width: 86px!important
+    }
+
+    .site-nav__link {
+        padding: 0 10px!important;
+        font-size: 17px
+    }
+
+    .aligncenter {
+        color: #fff;
+        font-size: 15px!important
+    }
+
+    .section-header__title {
+        color: #b92c34;
+        font-size: 20px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width:995px) {
+    .btn.icon-fallback-text.header-bar__search-submit {
+        background:0 0
+    }
+
+    .left-features.left-image,.right-features.right-image {
+        height: auto!important
+    }
+
+    .mainn {
+        width: 85%!important
+    }
+
+    .btn1,.btn2 {
+        height: 200px!important
+    }
+
+    .leftp {
+        margin: 3% 0 5.9% 3.2%!important
+    }
+
+    .product-rightpart h1 {
+        font-size: 25px
+    }
+
+    .addto .btn,.addto .btn--secondary,.addto .btn--tertiary,.addto input[type=submit] {
+        float: none!important
+    }
+
+    .udb {
+        width: 17%!important
+    }
+
+    .register-form,div#CustomerLoginForm,div#RecoverPasswordForm {
+        width: 70%!important
+    }
+
+    .aligncenter {
+        color: #fff;
+        font-size: 15px
+    }
+
+    .section-header__title {
+        color: #b92c34;
+        font-size: 20px
+    }
+
+    .footer-menu-2 {
+        padding-bottom: 40px
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .addto .btn,.addto .btn--secondary,.addto .btn--tertiary,.addto input[type=submit],.common-img {
+        float:none!important
+    }
+
+    .span.p_hover {
+        position: relative!important
+    }
+
+    .p_hover {
+        display: none!important
+    }
+
+    ul.footer-menu-1 li:nth-child(even) {
+        display: none
+    }
+
+    ul.footer-menu-1 li:nth-child(odd) {
+        display: inherit
+    }
+
+    .site-footer__links.footer-menu-1.inline-list {
+        display: block
+    }
+
+    ul.footer-menu-2 li:nth-child(even) {
+        display: none
+    }
+
+    ul.footer-menu-2 li:nth-child(odd) {
+        display: inherit
+    }
+
+    .site-footer__links.footer-menu-2.inline-list {
+        display: block
+    }
+
+    .input-group,.psort {
+        display: block!important
+    }
+
+    .left-features.left-image,.right-features.right-image {
+        height: auto!important
+    }
+
+    section.home-carousel .container12 {
+        width: auto!important
+    }
+
+    .mainn {
+        width: 70%!important
+    }
+
+    .btn1,.btn2 {
+        height: 254px!important;
+        width: 42px!important
+    }
+
+    .common-img,form#mc-embedded-subscribe-form {
+        width: 100%!important
+    }
+
+    .Satisfacation,.free-shipping {
+        padding: 0!important
+    }
+
+    .leftp {
+        margin: 3% 0 0 3%!important;
+        text-align: justify;
+        width: 94%!important
+    }
+
+    .psort {
+        margin: 13px auto 0;
+        width: 67%!important
+    }
+
+    .rigt {
+        margin: 10% 0 0!important
+    }
+
+    div#banner_mid {
+        padding: 25px 10px!important
+    }
+
+    .rigt .social-icons {
+        padding: 0 0 21px!important
+    }
+
+    .footer-menu-2 {
+        padding-bottom: 40px
+    }
+
+    .product-rightpart h1 {
+        font-size: 25px
+    }
+
+    .udb {
+        width: 12%!important
+    }
+
+    .supports-fontface .header-bar__search-input[type=search] {
+        margin: 4px 35px 3px 11px;
+        padding-left: 24px!important;
+        width: 78%!important;
+        float: none!important
+    }
+
+    .my-search-bar button {
+        background: #000!important
+    }
+
+    .btn.icon-fallback-text.header-bar__search-submit {
+        background: 0 0
+    }
+
+    .supports-fontface .header-bar__search-submit {
+        left: 15px!important
+    }
+
+    .register-form,div#CustomerLoginForm,div#RecoverPasswordForm {
+        width: 85%!important
+    }
+
+    div#RecoverPasswordForm h1 {
+        font-size: 19px!important
+    }
+
+    .register-form h1 {
+        font-size: 25px!important
+    }
+
+    .section-header__title {
+        color: #b92c34
+    }
+
+    #SortBy {
+        width: 95%
+    }
+
+    .psort .site-nav {
+        width: 100%
+    }
+
+    .cust_site_link {
+        padding: 2% 21.7%!important
+    }
+
+    #ComparePrice {
+        color: #b92c34!important
+    }
+
+    .frequency_label span {
+        color: #000!important
+    }
+
+    .aligncenter span,.article-inner-content .rte {
+        color: #fff
+    }
+
+    .social-sharing .social-icons li .icon {
+        padding: 9px 10px 5px!important
+    }
+
+    .aligncenter {
+        color: #fff;
+        font-size: 11px
+    }
+
+    .section-header__title {
+        font-size: 20px!important
+    }
+
+    .rte.page-content h2 {
+        font-size: 18px!important
+    }
+
+    table.wholesale-table {
+        width: 100%!important
+    }
+
+    #contact-b-u-l-k-beef-jerky .cust-cont-form form {
+        width: 97%!important
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width:767px) {
+    .btn1,.btn2 {
+        width:36px!important
+    }
+
+    .btn2 {
+        position: relative;
+        z-index: 2147483647
+    }
+
+    .mainn {
+        width: 84%!important
+    }
+
+    .psort {
+        width: 50%!important;
+        float: left
+    }
+
+    .psort label {
+        display: none
+    }
+
+    .badge {
+        width: 140px!important
+    }
+
+    .badge--sold-out {
+        left: 20%!important;
+        margin: 0 auto!important;
+        top: 80%!important
+    }
+
+    span.grid-link__title {
+        font-size: 15px!important
+    }
+
+    .udb {
+        width: 9%!important
+    }
+
+    .input-group-btn,.input-group-field {
+        display: inline!important
+    }
+}
+
+@media only screen and (max-width: 479px) {
+/*     .small--one-half {
+        width:100%!important
+    } */
+}

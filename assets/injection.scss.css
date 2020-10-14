@@ -1,0 +1,11 @@
+.banner {
+    background-size: 100% !important;
+    background-repeat: no-repeat !important;
+    padding: 57px 0px 9px !important;
+}
+
+.logo--center {
+    text-align: left !important;
+  	position: relative;
+	bottom: 24px;
+}

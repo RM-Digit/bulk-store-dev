@@ -1,0 +1,39 @@
+.rc_layout__container{
+  margin:30px 15px; 
+  color:black;
+}
+
+#ReCharge-Nav ul li a {
+  display: block;
+  color: grey !important;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 15px;
+  text-transform: uppercase;
+}
+
+#ReCharge-Nav ul li.active a {
+  color: #af2a26 !important;
+  border-bottom:2px solid #af2a26;
+}
+.rc_title-bar__title h2{
+  font-family: asphaltic_scratch_rounded_pRg !important;
+  font-size: 4em;
+  border-bottom: 2px solid grey;
+}
+.rc_customer__name{
+  font-family: asphaltic_scratch_rounded_pRg;
+  font-size: 3em;
+}
+.rc_customer__name::before{
+  content: 'SUBSCRIPTIONS FOR';
+
+}
+#customer_tab_content{
+  padding-left:15px;
+}
+@media (max-width: 768px){
+  .recharge .rc_layout__container {
+    max-width:100% !important;
+  }
+}
