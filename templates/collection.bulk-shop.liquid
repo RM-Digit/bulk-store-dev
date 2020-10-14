@@ -1,0 +1,256 @@
+{% assign products_per_row = settings.collections_products_per_row %}
+{% assign rows = settings.collections_rows %}
+{% assign total_products = products_per_row | times: rows %}
+
+{% paginate collection.products by 1000 %}
+<div class="collection-page">
+  <div class="">
+    <!-- <div class="section-header section-header--breadcrumb">
+{% include 'breadcrumb' %}
+</div>
+
+<header class="section-header section-header--large">
+<h1 class="section-header__title{% if settings.collections_tags_enable or settings.collections_sort_enable %} section-header__title--left{% endif %}">{{ collection.title }}</h1>
+{% if settings.collections_tags_enable or settings.collections_sort_enable %}
+<div class="section-header__link--right">
+{% if settings.collections_tags_enable %}
+{% include 'collection-tags' %}
+{% endif %}
+{% if settings.collections_sort_enable %}
+{% include 'collection-sorting' %}
+{% endif %}
+</div>
+{% endif %}
+</header> -->
+
+    <!-- custom code -->
+    <div class="align">
+      <div class="leftp">
+
+        <h1>{{ collection.title }}</h1>
+        {{ collection.description }}
+
+        <img src="https://cdn.shopify.com/s/files/1/1110/8120/files/line_copy.png?10816916592656943324">
+        {% if settings.collections_tags_enable or settings.collections_sort_enable %}
+        <div class="section-header__link--left psort">
+          {% if settings.collections_tags_enable %}
+          <!----{% include 'collection-tags' %}----->
+          {% endif %}
+          {% if settings.collections_sort_enable %}
+          {% include 'collection-sorting' %}
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!---{% if settings.collections_tags_enable or settings.collections_sort_enable %}
+<div class="section-header__link--left psort">
+{% if settings.collections_tags_enable %}
+{% include 'collection-tags' %}
+{% endif %}
+{% if settings.collections_sort_enable %}
+{% include 'sorting-of-collections' %}
+{% endif %}
+</div>
+{% endif %}---->
+
+        <div class="section-header__link--left psort">
+
+          {% include 'custom-nav' %}
+
+        </div>
+
+
+      </div>
+
+      <div class="rigt">
+        <ul class="imgContainer">
+          <li class="listng imgr">
+            <img onclick="show_it()" src="https://cdn.shopify.com/s/files/1/1110/8120/files/heaRt.png?1144966233130450156" height="50" width="50"/>
+          </li>
+          <li class="listng imgr1">
+            <img onclick="func()" src="https://cdn.shopify.com/s/files/1/1110/8120/files/skipping_Rope.png?1144966233130450156" height="50" width="50"/>
+          </li>
+          <li class="listng imgr2">
+            <img onclick="func1()" src="https://cdn.shopify.com/s/files/1/1110/8120/files/exeRcise.png?1144966233130450156" height="50" width="50"/>
+          </li>
+          <li class="listng imgr3">
+            <img onclick="func2()" src="https://cdn.shopify.com/s/files/1/1110/8120/files/cycle.png?2745743096637981113" height="50" width="50"/>
+          </li>
+        </ul>
+
+        <div class="jq">
+          <div id="banner_mid"> {{ pages.heart-hover.content }}</div>
+          <div id="content"> {{ pages.skipping-rope.content }}</div>
+          <div id="content1"> {{ pages.exercising-dumble.content }}</div>
+          <div id="content2"> {{ pages.cycle.content }}</div>
+        </div>
+
+        <div>
+          {% include 'social-links' %}
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      $("document").ready(function(){
+        $("#banner_mid").hide();
+        $("#content").hide();
+        $("#content1").hide();
+        $("#content2").hide();
+
+        $(".imgr img").mouseenter(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/wheaRt.png?9007611453042265546");
+        }).mouseleave(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/heaRt.png?13315993272184306771");
+        });
+
+        $(".imgr1 img").mouseenter(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/wRope.png?9007611453042265546");
+        }).mouseleave(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/skipping_Rope.png?13315993272184306771");
+        });
+
+        $(".imgr2 img").mouseenter(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/wexeRcise.png?9007611453042265546");
+        }).mouseleave(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/exeRcise.png?9813358414480293078");
+        });
+
+        $(".imgr3 img").mouseenter(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoing.png?18286620801705516089");
+        }).mouseleave(function(){
+          $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/cycle.png?9813358414480293078");
+        });
+
+
+
+      });
+
+      function show_it(){
+        $("#content").hide();
+        $("#content1").hide();
+        $("#content2").hide();
+        $("#banner_mid").show(100);
+      }
+
+      function func(){
+        $("#banner_mid").hide();
+        $("#content1").hide();
+        $("#content2").hide();
+        $("#content").show(100);
+      }
+
+      function func1(){
+        $("#banner_mid").hide();
+        $("#content").hide();
+        $("#content2").hide();
+        $("#content1").show(100);
+      }
+
+      function func2(){
+        $("#banner_mid").hide();
+        $("#content1").hide();
+        $("#content").hide();
+        $("#content2").show(100);
+      }
+
+
+    </script>
+    <!-- custom code -->
+
+
+
+
+
+    {% case products_per_row %}
+    {% when '2' %}
+    {% assign grid_item_width = 'small--one-half medium--one-half large--one-half' %}
+    {% when '3' %}
+    {% assign grid_item_width = 'small--one-half medium--one-third large--one-third' %}
+    {% when '4' %}
+    {% assign grid_item_width = 'small--one-half medium--one-half large--one-quarter' %}
+    {% when '5' %}
+    {% assign grid_item_width = 'small--one-half medium--one-half large--one-fifth' %}
+    {% endcase %}
+
+    <div class="grid-uniform grid-link__container">
+
+      {% for product in collection.products %}
+      {% include 'product-grid-item' %}
+      {% else %}
+
+      {% if shop.products_count == 0 %}
+      {% unless emptyState %}
+      {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+      {% assign emptyState = true %}
+      {% endunless %}
+
+      <div class="grid__item">
+        <div class="helper-section">
+          <div class="helper-note">
+            <span class="helper-icon"></span>
+            <h3>{{ 'home_page.onboarding.modal_title' | t }}</h3>
+            <p>{{ 'home_page.onboarding.no_products_collection' | t }}</p>
+            <p><a class="admin-btn-primary" href="/admin/products/new">{{ 'home_page.onboarding.add_product' | t }}</a></p>
+          </div>
+
+          <div class="grid-uniform helper-content">
+            {% assign index = 1 %}
+            {% for i in (1..8) %}
+            {% case i %}
+            {% when 7 %}
+            {% assign index = 1 %}
+            {% when 8 %}
+            {% assign index = 2 %}
+            {% endcase %}
+            <div class="grid__item one-half large--one-quarter">
+              <a href="/admin/products" class="grid-link">
+                <span class="grid-link__image grid-link__image--product">
+                  <span class="grid-link__image-centered">
+                    {% capture imageUrl %}//cdn.shopify.com/s/images/themes/product-{{ index }}.png{% endcapture %}
+                    {{ imageUrl | img_tag }}
+                  </span>
+                </span>
+                <p class="grid-link__title">{{ 'home_page.onboarding.product_title' | t }}</p>
+                <p class="grid-link__meta">
+                  <strong>$19.99</strong>
+                </p>
+              </a>
+            </div>
+            {% assign index = index | plus: 1 %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="clear"></div>
+      <div class="container12 no-collection">
+        <p><em>{{ 'collections.general.no_matches' | t }}</em></p>
+      </div>
+      {% endif %}
+
+      {% endfor %}
+
+    </div>
+    {% comment %}
+    {% if paginate.next %}
+    <div id="more">
+      <p><center>&darr; <a href="{{ paginate.next.url }}">More</a></center></p>
+    </div>
+    {% endif %}
+
+    <div id="product-list-foot"></div>
+    {% endcomment %}
+
+    {% if paginate.pages > 1 %}
+    <hr class="hr--clear">
+
+    <div class="text-center">
+      {% include 'pagination-custom' %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endpaginate %}

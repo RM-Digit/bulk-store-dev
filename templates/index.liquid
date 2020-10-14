@@ -1,0 +1,504 @@
+<!--{% if settings.home_section_1 != blank %}-->
+<!--<div class="home-slider" style="min-width: 100%; padding: 0; margin: 0;">-->
+<!--{% include settings.home_section_1 %}-->
+<!--</div>-->
+<!--{% endif %}-->
+
+<div id="container-cust">
+  <!--  Outer wrapper for presentation only, this can be anything you like -->
+  <div id="banner-fade" style="max-width: 100%; !important">
+
+    <!-- start Basic Jquery Slider -->
+    <ul class="bjqs">
+
+
+
+      {% for i in (1..6) %}
+      {% capture slide %}slide_{{ i }}{% endcapture %}
+      {% capture slide_link %}slide_{{ i }}_link{% endcapture %}
+      {% capture slide_img %}slide_{{ i }}.jpg{% endcapture %}
+      {% capture slide_alt %}slide_{{ i }}_alt{% endcapture %}
+
+      {% capture slide_header %}slide_{{ i }}_header{% endcapture %}
+      {% capture slide_body %}slide_{{ i }}_body{% endcapture %}
+
+      {% capture button_1_enabled %}slide_{{ i }}_button_1_enabled{% endcapture %}
+      {% capture button_1_text %}slide_{{ i }}_button_1_text{% endcapture %}
+      {% capture button_1_link %}slide_{{ i }}_button_1_url{% endcapture %}
+
+      {% capture button_2_enabled %}slide_{{ i }}_button_2_enabled{% endcapture %}
+      {% capture button_2_text %}slide_{{ i }}_button_2_text{% endcapture %}
+      {% capture button_2_link %}slide_{{ i }}_button_2_url{% endcapture %}
+
+      {% capture mobile_slide_img %}mobile_slide_{{ i }}.jpg{% endcapture %}
+
+      {% assign mobile_slide_img_url = mobile_slide_img | asset_url %}
+
+      {% capture slide_link %}slide_{{ i }}_link{% endcapture %}
+
+
+
+      {% if settings[slide] %}
+      <li>
+
+        <div class="slide {% if settings[slide_link].size > 1 %}clickable{% endif %}" id="slide_{{ i }}" data-mobile="{{ mobile_slide_img_url }}"
+             style="background-image:url('{{ slide_img | asset_img_url: '1920x' }}'); height:100%;"
+             {% if settings[slide_link].size > 1 %}
+             onclick="window.location='https://{{ settings[slide_link] | replace: "http://", "" | replace: "https://", "" }}'"
+             {% endif %}
+             >
+
+          <div class="grid--full">
+            <div class="grid__item small--one-whole medium--one-whole large--one-half" style="text-align: center;">
+              <div class="hero-text-container" style="">
+                <div class="hero-text-header asphaltic" style="margin-bottom:20px; color:white; ">{{ settings[slide_header]}}</div>
+                <div class="hero-text-body" style="text-align: left; margin-bottom:20px;">{{ settings[slide_body]}}</div>
+
+                {% if settings[button_1_enabled] %}
+                <div style="display: inline-block; margin: 0 0px 0px 0;">
+                  <div class="hero-button-container"
+                       style="padding: 15px; background-image:url('{{ 'redWashShopNow.png' | asset_url  }}');  background-repeat: no-repeat;
+                              background-position: center; background-size: contain; position: relative;">
+                    <a href="{{ settings[button_1_link] }}" class="hero-button"
+                       style="display:inline-block; border:1px solid white; padding: 8px 12px;">
+                      <div class="asphaltic" style="color: white; font-size: 2.8em;">
+                        {{ settings[button_1_text] }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if settings[button_2_enabled] %}
+                <div style="display: inline-block; margin: 0 0px 10px 0;">
+                  <div class="hero-button-container"
+                       style="padding: 15px;background-image:url('{{ 'redWash.png' | asset_url  }}');  background-repeat: no-repeat;
+                              background-position: center; background-size: contain; position: relative;">
+                    <a href="{{ settings[button_2_link] }}" class="hero-button"
+                       style="display:inline-block; border:1px solid white; padding: 8px 12px;">
+                      <div class="asphaltic" style="color: white; font-size: 2.8em;">
+                        {{ settings[button_2_text] }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
+
+
+              </div>
+            </div>
+
+            <div class="grid__item small--zero medium--zero large--one-half"></div>
+          </div>
+          <!--<img src="{{ 'hero_sales_ribbon.png' | asset_url }}" style="position: absolute; right:0; bottom:0;">-->
+
+          {% if settings[slide_link].size > 1 %}
+          </a>
+        {% endif %}
+
+      </div>
+
+
+
+    </li>
+  {% endif %}
+  {% endfor %}
+
+
+
+
+  </ul>
+<!-- end Basic jQuery Slider -->
+
+</div>
+<!-- End outer wrapper -->
+
+<script class="secret-source">
+  jQuery(document).ready(function($) {
+
+    $('#banner-fade').bjqs({
+      //height      : 320,
+      //width       : 620,
+      responsive  : true
+    });
+
+  });
+</script>
+</div>
+
+
+<div class="bulk-wallpaper" style="text-align: center; margin:0 auto;">
+  <div class="grid--full">
+
+    <div class="grid__item small--whole medium--whole large--whole">
+
+      <div style="border-bottom:1px solid #af2a26; width:100%; position:relative; top:-56px;">
+        <div style="background-image: url('{{ 'bulk_wallpaper.png' | asset_url }}'); display:inline-block; padding:6px; border:1px solid #af2a26; margin:20px auto 20px; position:relative; top: 56px;">
+          <a href="/pages/email-signup" style="color:white; ">
+            <div class="asphaltic" style="display:inline-block; background:#af2a26; color:white; font-size: 3em; padding:3px 6px;">Join the B.U.L.K Family</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div style="background:white; padding:40px 0">
+  <div class="grid--full" style="margin-bottom:10px;">
+    <div class="grid__item small--zero medium--zero large--one-twelfth">
+
+    </div>
+
+    <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+
+      <div class="grid--full">
+        <div class="grid__item">
+          <div class="bulk-section-header-wrapper">
+            <h1 class="bulk-section-header">
+           		What's the Family Saying?
+            </h1>
+            <div class="bulk-section-header-line"></div>
+          </div>
+
+          <div class="grid--full">
+            <div class="grid__item small--one-whole medium--one-quarter large--one-quarter">
+              <div class="review-box-wrapper">
+                <div class="review-box" style="">
+                  <div>
+                    <div style=""></div>
+                    <div class="review-box-name"><span class="red-text">Melisa</span> Bareis</div>
+                    <div class="review-box-review">"I ordered four flavors to try and Garlic was my number 1! Second was BBQ. But the garlic flavor was just right. Not too salty, it was gone in one day. My family also liked it. The best. Yum!"
+                    </div>
+                  </div>
+                  <div style="position: relative;">
+                    <div style="text-align: right;">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid__item small--one-whole medium--one-quarter large--one-quarter">
+              <div class="review-box-wrapper">
+                <div class="review-box" style="">
+                  <div>
+                    <div style="background-image: url('');"></div>
+                    <div class="review-box-name"><span class="red-text">Randall</span> Dupuy</div>
+                    <div  class="review-box-review">"Some of the best I’ve ever tasted. Company handles orders efficiently and without error. True customer service!"</div>
+                  </div>
+                  <div style="position: relative;">
+                    <div style="text-align: right;">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid__item small--one-whole medium--one-quarter large--one-quarter">
+              <div class="review-box-wrapper">
+                <div class="review-box" style="">
+                  <div>
+                    <div style="background-image: url('');"></div>
+                    <div class="review-box-name"><span class="red-text">Chris</span> Meyer</div>
+                    <div  class="review-box-review">"I ordered the alligator along with the brisket and found them both fantastic."</div>
+                  </div>
+                  <div style="position: relative;">
+                    <div style="text-align: right;">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid__item small--one-whole medium--one-quarter large--one-quarter">
+              <div class="review-box-wrapper">
+                <div class="review-box" style="">
+                  <div>
+                    <div style="background-image: url('');"></div>
+                    <div class="review-box-name"><span class="red-text">Michael</span> Mclean</div>
+                    <div  class="review-box-review">"Love it, at first you just think wow this is good, then the burn. Great stuff. Thanks Guys!"</div>
+                  </div>
+                  <div style="position: relative;">
+                    <div style="text-align: right;">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-bottom:2px solid #af2926; margin:60px auto 30px;">
+      </div>
+
+
+      <div class="grid--full">
+        <div class="grid__item small--one-whole medium--six-twelfths large--six-twelfths" style="text-align: center; margin:0 auto;">
+          <div class="asphaltic" style="font-size: 4em; text-align: center;">Hello from <span class="red-text">Petey G</span></div>
+          <div class="embed-container">
+            <iframe src="https://player.vimeo.com/video/263101587" width="640" height="520" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="grid__item small--one-whole medium--six-twelfths large--six-twelfths" >
+          <div class="asphaltic" style="font-size: 4em; text-align: center;">This is <span class="red-text">B.U.L.K</span></div>
+          <div class="embed-container">
+            <iframe src="https://player.vimeo.com/video/263101988" width="640" height="520" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+    <div class="grid__item small--zero medium--zero large--one-twelfth">
+
+    </div>
+  </div>
+</div>
+
+
+<div class="grid--full">
+
+  <div class="home-features" style="background: white;">
+
+
+    <div class="grid--full">
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+      <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+        {% include 'category-slider' %}
+      </div>
+
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    </div>
+
+  </div>
+
+
+
+  <div class="" style="width:100%; margin:45px auto; background:white; display:none;">
+    <div style="background:black; background-image:url('{{ 'whoWeAre.jpg' | asset_url }}'); background-repeat: no-repeat; background-position: center; background-size: cover">
+
+      <div
+           style="position: relative; max-width:800px;color:white;margin: 0 auto; padding: 80px 20px; text-align: center;">
+
+        <div class="asphaltic" style="font-size: 5em; margin-bottom:40px;"><span class="red-text">B</span>uilding
+          <span
+                class="red-text">U</span>p <span class="red-text">L</span>ives with <span class="red-text">K</span>indness
+        </div>
+
+        <a href="/pages/hero-story" class="hero-button" style="">
+          Share your everyday hero stories with us!
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="home_newsleter_bottom_sec" style="position: relative;">
+    <img class="lazyload" data-src="{{ 'kindnessBanner.jpg' | asset_url }}" style="width:100%; min-height:120px;">
+    <div style="position: absolute; top:0%; left:0; right:0; padding:12px 12px; text-align:center; color:white; font-size: 3em;">
+      <div style="text-align: center;">
+        <img class="lazyload" data-src="{{ 'bulkArm.png' | asset_url }}" style="margin:0 auto;">
+      </div>
+      <div class="custom_newleter_txt_bottom">
+        what does <span class="" style="color:rgb(175, 42, 38);font-weight: bold; ">kindness</span> mean to you?
+      </div>
+    </div>
+    <!--div style="position: absolute; top:60%; left:0; right:0; padding:12px 12px; text-align:center; background:#000; border:1px solid darkred; border-left:0; border-right:0; color:white; font-size:1.5em; vertical-align: middle;">COMING SOON</div-->
+    <div class="kindness_home_btn"> <a href="/pages/bulk-kindness">view the kindness wall</a></div>
+  </div>
+  <!--<div class="" style="width:100%; margin:45px auto; background:white; display:block;">-->
+  <!--<div style="min-height:150px; background:black; background-image:url('{{ 'kindnessBanner.jpg' | asset_url }}'); background-repeat: no-repeat; background-position: center; background-size: cover">-->
+
+  <!--</div>-->
+  <!--</div>-->
+
+  <div class="grid--full" style="margin-bottom:60px;">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+
+    <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+      <div class="bulk-section-header-wrapper">
+        <h1 class="bulk-section-header">
+          Tag Us On Insta<span class="red-text">Twit</span><span class="">Face</span>
+        </h1>
+        <div class="bulk-section-header-line"></div>
+      </div>
+      <div style="text-align: center; width:100%; position: relative; top:-20px; font-size: 1.2em;">Take a picture
+        with B.U.L.K and tag us (<span class="red-text">@Bulkbeefjerky</span>) on social media and let us know what kindness mean to you!
+      </div>
+      <div class="grid--full" style="margin:0 auto;">
+        <div id="insta-feed"></div>
+      </div>
+    </div>
+
+
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+  </div>
+  <div style="clear: both;"></div>
+
+
+  {% include 'email-signup-banner' %}
+
+
+
+  <!--<div class="clear"></div>-->
+  <!--<section class="home-carousel">-->
+  <!--<div class="container12">-->
+  <!--<div class="ccarousel">&lt;!&ndash; custom carousel starts&ndash;&gt;-->
+  <!--<button class="btn2">-->
+  <!--<img alt="previous" src="{{ '13.png' | asset_url }}" height="200px" width="50px"/>-->
+  <!--</button>-->
+
+  <!--<div class="mainn">-->
+  <!--<ul class="homeinner">-->
+  <!--{% for product in collections.home-page.products %}-->
+  <!--<li>-->
+  <!--<a href="{{ product.url }}">-->
+  <!--{% for image in product.images limit: 1 %}-->
+  <!--<img alt="{{ image.alt}}" src="{{ product.images[0] | product_img_url: 'medium' }}"-->
+  <!--width="195" height="100"/>-->
+  <!--{%endfor%}-->
+  <!--{% comment %} <span class="p_hover"><span>{{ product.title}}</span></span>{% endcomment %}-->
+  <!--<p class=" home-prod-title">{{ product.title}}</p>-->
+  <!--</a>-->
+  <!--</li>-->
+  <!--{% endfor %}-->
+  <!--</ul>-->
+  <!--</div>-->
+  <!--<button class="btn1"><img alt="next" src="{{ '12.png' | asset_url }}" height="200px" width="50px"/></button>-->
+  <!--</div>-->
+  <!--</div>&lt;!&ndash; custom carousel ends&ndash;&gt;-->
+  <!--</section>-->
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      jQuery('#more-video-1').click(function(){
+        var video_id = jQuery(this).attr('video-url');
+        jQuery('.more-video-change iframe').attr('src',video_id);
+      });
+
+      jQuery('#more-video-2').click(function(){
+        var video_id = jQuery(this).attr('video-url');
+        jQuery('.more-video-change iframe').attr('src',video_id);
+      });
+
+      jQuery('#more-video-3').click(function(){
+        var video_id = jQuery(this).attr('video-url');
+        jQuery('.more-video-change iframe').attr('src',video_id);
+      });
+      jQuery('#more-video-4').click(function(){
+        var video_id = jQuery(this).attr('video-url');
+        jQuery('.more-video-change iframe').attr('src',video_id);
+      });
+
+
+
+
+
+      var $carouselList, $width, currentItem, initLeft, numberOfItems, totalNumberOfItems;
+      initLeft           = 40;
+      $width             = 800;
+      numberOfItems      = 5;
+      $carouselList      = $('ul.carousel');
+      totalNumberOfItems = $carouselList.children().size();
+      currentItem        = numberOfItems;
+      $('a.next').on('click', function () {
+        var left;
+        left = parseInt($carouselList.css('left'));
+        left = left - 200;
+        if (currentItem === totalNumberOfItems) {
+          left        = initLeft;
+          currentItem = numberOfItems;
+        } else {
+          currentItem += 1;
+        }
+        return $carouselList.animate({
+          'left': left + "px"
+        }, 400);
+      });
+      return $('a.prev').on('click', function () {
+        var left;
+        left = parseInt($carouselList.css('left'));
+        left = left + 200;
+        if (currentItem === numberOfItems) {
+          left = initLeft - 200 * (totalNumberOfItems - numberOfItems);
+          console.log("left" + left);
+          currentItem = totalNumberOfItems;
+        } else {
+          currentItem -= 1;
+        }
+        return $carouselList.animate({
+          'left': left + "px"
+        }, 400);
+      });
+
+    });
+
+    function resizeReviewBoxes()
+    {
+      var reviewBoxes      = $('.review-box');
+      var largestBoxHeight = 20;
+      for (var i = 0; i < reviewBoxes.length; i++) {
+        $(reviewBoxes[i]).css('height','initial');
+        var reviewBoxHeight = $(reviewBoxes[i]).height();
+
+        if (reviewBoxHeight > largestBoxHeight) {
+          largestBoxHeight = reviewBoxHeight + 20;
+        }
+      }
+      for (var i = 0; i < reviewBoxes.length; i++) {
+        $(reviewBoxes[i]).css('height', largestBoxHeight + 'px');
+      }
+
+      var reviewBoxReviews      = $('.review-box-review');
+      var largestReviewHeight = 20;
+      for (var i = 0; i < reviewBoxReviews.length; i++) {
+        $(reviewBoxReviews[i]).css('height','initial');
+        var reviewHeight = $(reviewBoxReviews[i]).height();
+
+        if (reviewHeight > largestReviewHeight) {
+          largestReviewHeight = reviewHeight;
+        }
+      }
+      for (var i = 0; i < reviewBoxReviews.length; i++) {
+        $(reviewBoxReviews[i]).css('height', largestReviewHeight + 'px');
+      }
+    }
+
+    resizeReviewBoxes();
+    $(window).resize(function(){
+      resizeReviewBoxes();
+    });
+
+    $(document).ready(function(){
+      if($(document).width() < 768 ){
+        for(var i=1; i<= 6; i++){
+          var targetSlideDiv = "#slide_"+i;
+          var mobileImg  = $(targetSlideDiv).data('mobile');
+          //           console.log(targetSlideDiv);
+          //           console.log(mobileImg);
+          if(typeof mobileImg !== 'undefined' && mobileImg != ''){
+            $(targetSlideDiv).css("background-image","url('"+mobileImg+"')");
+          }
+        }
+      };
+    });
+
+  </script>
+  <script type="application/javascript">(function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10000','properties':{'pixelId':'10080816'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");</script>
+
+  <style>
+    .sliderLink {
+      text-decoration:none; display:block; width:100%; height:100%;
+    }
+  </style>

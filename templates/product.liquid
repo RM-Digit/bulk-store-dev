@@ -1,0 +1,738 @@
+{% include 'product-content.zipifypages', contentprt: 'header' %}<!-- Included Custom-carouel.js file -->
+<script type="text/javascript" src="{{ 'carousel.js' | asset_url }}" async defer> </script>
+
+{% assign product_description_split = product.description | split: '[SECTION]' %}
+
+{% if product_description_split.size > 1 %}
+{% assign product_bullets = product_description_split[0] %}
+{% assign product_description = product_description_split[1] %}
+{% else %}
+{% assign product_bullets = '' %}
+{% assign product_description = product.description %}
+{% endif %}
+
+  {% for variant in product.variants %}
+              <meta property=”og:title” content={{variant.title}} />
+    {% endfor %}
+
+<div itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  <div class="grid--full product-header-margin">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    <div class="grid__item small--full medium--ten-twelfths large--ten-twelfths">
+
+      <div class="desktop-product-header" style="position:relative;">
+
+        <div class="back-btn-wrapper" style="float:left;">
+          <a href="/collections/shop" style="color:black;">
+            <img class="back-btn-img" src="{{'backButton.jpg' | asset_img_url}}">
+            <div class="back-btn-text">SHOP</div>
+          </a>
+        </div>
+
+
+         <h1 class="product-title bulk-section-header" style="background:none; line-height: 1em; display:inline-block; padding:5px 25px; float:left;">
+            {% assign product_title_split = product.title | split: ' ' %}
+            {% for word in product_title_split %}
+            {% if forloop.first != true %}
+            <span class="black-text">{{ word }}</span>
+            {% else %}
+            <span class="red-text">{{ word }}</span>
+            {% endif %}
+            {% endfor %}
+        </h1>
+
+        <div class="desktop" style="opacity:0; color:transparent; font-family:avenir; font-size: 2.5em; text-align:right; font-style:italic; float:right;">
+          {% if product.metafields.descriptions.collection %}
+          {{ product.metafields.descriptions.collection }}
+          {% endif %}
+        </div>
+
+        <div class="desktop" style="color:grey; font-family:avenir; font-size: 2.5em; text-align:right; font-style:italic; position:absolute; right:0; bottom:0;">
+          {% if product.metafields.descriptions.collection %}
+          {{ product.metafields.descriptions.collection }}
+          {% endif %}
+        </div>
+
+        <div style="clear:both;"></div>
+
+      </div>
+    </div>
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+
+    <div class="grid--full" style="margin: 3em auto 0; padding: 0 10px;">
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      <div class="grid__item small--full medium--five-twelfths large--four-twelfths">
+
+
+
+
+
+        <div class="grid--full mobile-product-header">
+
+          <div class="grid__item small--none medium--four-twelfths large--three-twelfths desktop">
+            <div id="ProductThumbs" >
+              {% for image in product.images %}
+              {% if forloop.index <= 100 %}
+              {% assign alt_tags = image.alt | replace: ', ', ',' | replace: ' ', '-' | split: ',' %}
+
+
+
+              <a data-image-id="{{ image.id }}" href="{{ image.src | img_url: '1024x1024' }}" class="product-single__thumbnail variantImages {% for alt_tag in alt_tags %}variantImage-{{ alt_tag | replace: ' ', '-' | replace: '&', 'and' }} {% endfor %} hidden" style="">
+                <div class="" style="padding:0 5px 5px 0; ">
+                  <div class="item-display-box-image product-thumbnail-gallery-item"
+                       style="margin:0; min-width:50px; min-height:50px; width:100%; background-image:url({{ image.src | img_url: '512x512' }});">
+                  </div>
+                </div>
+              </a>
+
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+
+
+          <div class="grid__item small--five-twelfths medium--eight-twelfths large--nine-twelfths" >
+            <div class="product-single__photos" id="ProductPhoto">
+              {% assign featured_image = product.selected_or_first_available_variant.featured_image | default:product.featured_image %}
+              <img id="ProductPhotoImg" src="{{ featured_image | img_url: '1024x1024' }}" alt="{{ featured_image.alt | escape }}" data-image-id="{{ featured_image.id }}" style="display:none;">
+              <div id="mainProductImage" data-image-id="{{ featured_image.id }}" class="item-display-box-image" style="min-width:50px; min-height:50px; width:100%; background-image:url({{ featured_image | img_url: '512x512' }});"></div>
+            </div>
+          </div>
+
+
+          <div class="grid__item small--seven-twelfths mobile" style="padding-left:10px;">
+
+
+            <div class="product-title mobile avenir" style="font-size:0.9em; border-top:0px solid #dddddd">
+              {% for variant in product.variants %}
+              <div id="" class="avenir variantTitle variantTitle-{{variant.id}} hidden" style="font-size:1.5em; font-weight:bold;">
+                {% assign variant_title_split = variant.option1 | split: ' ' %}
+                {% for word in variant_title_split %}
+                {% if forloop.last != true %}
+                <span class="black-text">{{ word }}</span>
+                {% else %}
+                <span class="black-text">{{ word }}</span>
+                {% endif %}
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="mobile" style="margin-top:0px; font-size:1.5em;">
+              {% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: 'font-size:0.7em;', concierge_install: false %}
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="grid--full mobile" style="border-bottom:1px solid #b92c34; margin-bottom:15px;">
+
+        <div class="grid__item small--two-thirds">
+          <div class="purchase" itemprop="offers" itemscope itemtype="http://schema.org/Offer" style="padding: 0 15px;">
+            <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+            {% if product.available %}
+            <link itemprop="availability" href="http://schema.org/InStock" />
+            {% else %}
+            <link itemprop="availability" href="http://schema.org/OutOfStock" />
+            {% endif %}
+
+            <h2 class="price" id="price-preview" style="color: black; padding: 5px 0">
+              Price: <span itemprop="price" class="product-price red-text" id="">{{ product.price_min | money }}</span>
+              {% if product.price_min < product.compare_at_price_min %} <del class="compare-price" id="">{{ product.compare_at_price_min | money }}</del>{% endif %}
+            </h2>
+
+
+          </div>
+        </div>
+
+        <div class="grid__item small--one-third">
+          <div style="padding:5px 0 5px 5px">
+            <h2>
+              {% if product.available %}
+              <span class="green-text is-available">In Stock</span>
+              <span class="red-text is-not-available" style="display:none;">Out of Stock</span>
+              {% else %}
+              <span class="green-text is-available" style="display:none;">In Stock</span>
+              <span class="red-text is-not-available">Out of Stock</span>
+              {% endif %}
+            </h2>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {% if product.id != 1387770249327 %}
+      <div class="mobile" id="nutritionalInfo" style="text-align:center; margin-bottom:10px; color:#2282dd; ">
+        <a style="color:#2282dd; text-decoration:underline;">More product pictures</a><i id="nutritionalInfoCaret" class="fas fa-caret-down" style="margin-left:4px;"></i>
+      </div>
+      {% endif %}
+
+      <div id="nutritionalPic" class="hidden" style="">
+        {% assign alt_tags_used = '' %}
+        {% for image in product.images %}
+        {% assign imaeObj = null %}
+        {% if forloop.index <= 100 %}
+        {% assign alt_tags = image.alt | replace: ', ', ',' | replace: ' ', '-' | split: ',' %}
+
+        {% assign alt_tag_used = false %}
+        {% for alt_tag in alt_tags %}
+        {% if alt_tags_used contains alt_tag %}
+        {% assign alt_tag_used = true %}
+        {% endif %}
+        {% endfor %}
+
+        {% if alt_tag_used %}
+        <div class="variantImages {% for alt_tag in alt_tags %}variantImage-{{ alt_tag | replace: ' ', '-' | replace: '&', 'and' }} {% endfor %} hidden" style="">
+          <div class="" style="padding:0 5px 5px 0; ">
+            <img class="" src="{{ image.src | img_url: '512x512' }}">
+          </div>
+        </div>
+        {% endif %}
+
+        {% for alt_tag in alt_tags %}
+        {% if alt_tags_used contains alt_tag %}
+        {% else %}
+        {% assign alt_tags_used = alt_tags_used | append: alt_tag %}
+        {% endif %}
+        {% endfor %}
+
+
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="grid__item small--full medium--seven-twelfths large--four-twelfths desktop">
+
+        <div style="padding:0 0 0 15px; color:black;">
+          <div class="product-title bulk-section-header desktop" style="font-size:5em; line-height: 1em">
+
+            {% for variant in product.variants %}
+            <div id="" class=" variantTitle variantTitle-{{variant.id}} hidden">
+              {% assign variant_title_split = variant.option1 | split: ' ' %}
+              {% for word in variant_title_split %}
+              {% if forloop.last != true %}
+              <span class="black-text">{{ word }}</span>
+              {% else %}
+              <span class="black-text">{{ word }}</span>
+              {% endif %}
+              {% endfor %}
+
+            </div>
+            {% endfor %}
+
+
+          </div>
+
+          <div class="desktop" style="padding-left:15px;">
+            {% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: false %}
+          </div>
+
+          <div class="desktop" style="border:2px solid #c3c3c3; border-top:0; width:100%; margin:15px 0 10px;"></div>
+
+          <div class="purchase desktop" itemprop="offers" itemscope itemtype="http://schema.org/Offer" style="padding: 0 15px;">
+            <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+            {% if product.available %}
+            <link itemprop="availability" href="http://schema.org/InStock" />
+            {% else %}
+            <link itemprop="availability" href="http://schema.org/OutOfStock" />
+            {% endif %}
+
+            <h2 class="price" id="price-preview" style="color: black; padding: 15px 0">
+              Price: <span itemprop="price" class="product-price red-text" id="">{{ product.price_min | money }}</span>
+              {% if product.price_min < product.compare_at_price_min %} <del class="compare-price" id="">{{ product.compare_at_price_min | money }}</del>{% endif %}
+            </h2>
+
+
+          </div>
+
+          <div class="desktop" style="padding: 15px 15px 0">
+            <h2>
+              {% if product.available %}
+              <span class="green-text is-available">In Stock</span>
+              <span class="red-text is-not-available" style="display:none;">Out of Stock</span>
+              {% else %}
+              <span class="green-text is-available" style="display:none;">In Stock</span>
+              <span class="red-text is-not-available">Out of Stock</span>
+              {% endif %}
+            </h2>
+          </div>
+
+          <div id="" style="padding: 0px 15px 0 35px; font-size:13px;">
+            <h3>
+
+              {% for variant in product.variants %}
+              <ul id="" class="variantBullets variantBullets-{{variant.id}} hidden desktop" style="list-style-type:bullets;">
+                {{ variant.metafields.descriptions.bullets }}
+              </ul>
+              {% endfor %}
+
+            </h3>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="grid__item small--full medium--full large--two-twelfths">
+        <div>
+
+
+          <div>
+            <div class="" style="border: 2px solid #c3c3c3; padding:15px 15px 15px; ">
+
+              {% assign hide_default_title = false %}
+              {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+              {% assign hide_default_title = true %}
+              {% endif %}
+
+              <form action="/cart/add" data-productid="{{ product.id }}" data-productid="{{product.id}}" method="post" enctype="multipart/form-data" id="AddToCartForm" class="addto">
+<!-- Begin ReCharge code -->
+{% if product.available %}{% include 'subscription-product' %}{% endif %}
+<!-- End ReCharge code -->
+
+
+                <div class="product-options">
+
+                  <div class=" select clearfix"{% if hide_default_title %} style="display:none"{% endif %}>
+
+                    <select name="id" data-productid="{{ product.id }}" data-productid="{{product.id}}" id="productSelect" class="product-single__variants" >
+                      {% for variant in product.variants %}
+                      {% if variant.available %}
+
+                      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" data-price="{{ variant.price | money_without_currency | remove: ',' }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+
+                      {% else %}
+                      <option disabled="disabled">
+                        {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
+                    </select>
+
+                  </div>
+
+                  <div class="select clearfix" style="margin-bottom:10px;">
+                    <label for="product-select" style="text-transform: uppercase; float:left; font-size: 1.2em; font-weight:bold; text-align: right; padding-right: 5px;">QTY</label>
+                    <select id="quantity" name="quantity" class="left" style="">
+                      {% for i in (1..20) %}
+                      <option value="{{ i }}">{{ i }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+
+                  <div class="ro_widget"></div>
+
+                  {% comment %}
+                  {% include 'bold-ro' with product %}
+                  {% endcomment %}
+
+                  {% if product.available %}
+                  <button type="submit" name="add" id="AddToCart" class="btn addtocart">
+                    <span id="AddToCartText">Add to Cart</span>
+                  </button>
+                  {% else %}
+                  <button type="btn" name="add" id="AddToCart" class="btn" disabled>
+                    <span id="AddToCartText" style="color:white;">Sold Out</span>
+                  </button>
+
+
+                  {% endif %}
+
+
+
+                  <!-- bold-ro-liquid --> 
+                  <div class="bold_add_to_orders" style="display: inline-block;"> </div>
+                  <!-- bold-ro-liquid -->
+
+                </div>
+
+              </form>
+            </div>
+            <div class="free-shipping-image desktop" style="text-align: center; ">
+              <img src="{{ 'FreeShipping_Button.jpg' | asset_url }}" style="margin:15px auto 0">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    </div>
+
+    <div class="grid--full" style="padding:0 10px;">
+
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+      <div id="descriptionContainer" class="grid__item small--full medium--full large--eight-twelfths" style="border-bottom:2px solid #c3c3c3; ">
+        <div id="description" class="description" itemprop="description" style="color:black !important;">
+
+          <div class="asphaltic desktop" style="font-size:3em; border-bottom:0px solid rgb(195, 195, 195); padding-bottom:8px;">Product Description</div>
+
+
+          <div class="grid__item small--whole" class="mobile">
+            <div id="" style="padding: 0px 25px 0 35px; font-size:13px;">
+              <h3>
+
+                {% for variant in product.variants %}
+                <ul id="" class="variantBullets variantBullets-{{variant.id}} hidden mobile" style="list-style-type:bullets;">
+                  {{ variant.metafields.descriptions.bullets }}
+                </ul>
+
+                {% endfor %}
+
+              </h3>
+            </div>
+
+            <div class="mobile" style="margin:15px auto;">
+              <img src="{{ 'free_shipping_banner.jpeg'| asset_url }}">
+            </div>
+          </div>
+
+
+          <div class="asphaltic mobile" style="font-size:3em; border-bottom:0px solid rgb(195, 195, 195); padding-bottom:8px;">Product Description</div>
+
+
+
+          <div id="variantDescriptions">
+
+            <!-- Only show on kippered beef product -->
+            {% if product.id == 8502765065 %}
+            <div style="margin-bottom:15px;">
+              <p>
+                {{ product_description }}
+              </p>
+            </div>
+            {% endif %}
+
+            {% for variant in product.variants %}
+            <div id="variantDescription-{{variant.id}}" class="variantDescription hidden">
+              {{ variant.metafields.descriptions.description }}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+      <div id="" class="grid__item small--full medium--full large--two-twelfths" style="display:none;border-bottom:2px solid #c3c3c3; ">
+
+        <div id="promoSquare" style="width:100%; min-height:250px; background: #c3c3c3; color:white; font-size:2em; padding:16px 30px; text-align: center;">
+          Free shipping on orders over <span class="red-text">$100</span>
+        </div>
+      </div>
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    </div>
+
+    <div class="grid--full" style="padding:0 10px;">
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      <div class="grid__item small--full medium--full large--eight-twelfths" style="border:0px solid #c3c3c3; border-top:0;">
+
+        <div class="desktop-margin" style="">
+
+          {% include 'questions-answers' %}
+
+        </div>
+
+      </div>
+      <div class="grid__item small--full medium--full large--two-twelfths" style="border:0px solid #c3c3c3; border-top:0;">
+
+      </div>
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    </div>
+
+
+    <div class="grid--full" style="padding:15px 10px 30px;">
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      <div class="grid__item small--full medium--full large--eight-twelfths product_star_ratting_section">
+        <div class="custom_description_main">
+          <div class="custom_description_inner">
+            <div class="description_left">
+            </div>
+            <div class="review_right">
+              <div class='span12'>
+
+                {% include 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: false %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    </div>
+
+
+    <div class="grid--full">
+      <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      <div class="grid__item small--full medium--full large--ten-twelfths">
+
+        {% include 'similar-products' %}
+
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      </div>
+
+    </div>
+
+    <div>
+      <input type="hidden" class="totalprod" value="{{ collection.products.size }} ">
+    </div>
+
+    {% include 'email-signup-banner' %}
+
+
+
+    {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+	
+    <script>
+         function camelCaseToDash(str) {
+            return str
+                .replace(/[^a-zA-Z0-9]+/g, '-')
+                .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+                .replace(/([a-z])([A-Z])/g, '$1-$2')
+                .replace(/([0-9])([^0-9])/g, '$1-$2')
+                .replace(/([^0-9])([0-9])/g, '$1-$2')
+                .replace(/-+/g, '-')
+                .toLowerCase();
+        }
+      
+        var hasVariant = window.location.href.indexOf("variant") > -1;
+
+        if(hasVariant) {
+            var pathname = window.location.pathname.replace('products', 'product');         
+            var url = new URL(window.location.href);
+            var variantId = url.searchParams.get('variant');
+            var currentVariant = window.meta.product.variants.find(variant => variant.id == variantId);
+
+            var newUrl = pathname + camelCaseToDash(removeWhiteSpaces(currentVariant.public_title));
+            window.history.replaceState({ path: newUrl }, '', newUrl);
+        }
+    </script>
+    
+    <script>
+      jQuery(function($) {
+
+        new Shopify.OptionSelectors('productSelect', {
+          product: {{ product | json }},
+          onVariantSelected: selectCallback,
+          enableHistoryState: false
+        });
+        
+        // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+        {% if product.options.size == 1 and product.options.first != 'Title' %}
+        $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}:</label>');
+                                             {% endif %}
+
+                                             // Hide selectors if we only have 1 variant and its title contains 'Default'.
+                                             {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+                                             $('.selector-wrapper').hide();
+        {% endif %}
+      });
+
+      jQuery(document).ready(function(){
+        var qty=$('#Quantity').val();
+        jQuery('.incre').click(function(){
+          qty++;
+          jQuery('#Quantity').val(qty);
+          //Quantity increment
+        });
+
+        jQuery('.decre').click(function(){
+          if(qty>1){
+            qty--;
+            jQuery('#Quantity').val(qty);
+            //Quantity decrement
+          }
+        });
+
+        //Getting Description
+        var desc= jQuery('.product-description').html();
+        jQuery('.description_left').html(desc);
+        jQuery('.description_left .nutri_main').remove();
+        jQuery('.product-description').contents(':not(.nutri_main)').remove();
+      });
+
+
+      jQuery(document).ready(function(){
+        var qty=$('#Quantity').val();
+        jQuery('.incre').click(function(){
+          qty++;
+          jQuery('#Quantity').val(qty);
+          //Quantity increment
+        });
+
+        jQuery('.decre').click(function(){
+          if(qty>0){
+            qty--;
+            jQuery('#Quantity').val(qty);
+            //Quantity decrement
+          }
+        });
+
+        // Get URL
+        var currenturl= window.location.href;
+        var beefUrl= 'http://bulk-test-store.myshopify.com/collections/beef-jerky';
+        if(currenturl != beefUrl){
+          jQuery( ".grid-link__title" ).remove();
+        }
+        //Getting Description
+        var desc= jQuery('.product-description').html();
+        jQuery('.description_left').html(desc);
+        jQuery('.description_left .nutri_main').remove();
+        jQuery('.product-description').contents(':not(.nutri_main)').remove();
+      });
+
+
+    </script>
+
+
+    <script>
+      var pathname = window.location.pathname.replace('products', 'product');
+      pathname = pathname.charAt(pathname.length - 1) == '/' ? pathname : pathname + '/';
+      
+      $(document).on('click', '#nutritionalInfo', function(){
+        $("#nutritionalPic").toggleClass("hidden");
+
+        if($("#nutritionalPic").hasClass('hidden')){
+          $("#nutritionalInfoCaret").addClass('fa-caret-down').removeClass('fa-caret-up');
+        } else {
+          $("#nutritionalInfoCaret").removeClass('fa-caret-down').addClass('fa-caret-up');
+
+        }
+
+      });
+
+      $(document).on('click', '.product-single__thumbnail', function(){
+        var imageURL = $(this).prop('href');
+        $('#mainProductImage').css('background-image', 'url("'+imageURL+'")');
+      });
+
+
+      $(document).ready(function(){
+        $("#mainProductImage").each( function(){
+          $(this).css('height', $(this).width());
+        });
+        $(".product-thumbnail-gallery-item").each( function(){
+          $(this).css('height', $(this).width());
+        });
+      });
+
+
+      function displayVariantDescription(variant){
+        if(variant == null){
+          return; 
+        }
+        $(".variantTitle").addClass("hidden");
+        var variantSelector = '.variantTitle-'+variant.id;
+
+        $(variantSelector).removeClass("hidden");
+
+
+        $(".variantDescription").addClass("hidden");
+        variantSelector = '#variantDescription-'+variant.id;
+        $(variantSelector).removeClass("hidden");
+
+        $(".variantBullets").addClass("hidden");
+        variantSelector = '.variantBullets-'+variant.id;
+        $(variantSelector).removeClass("hidden");
+
+        $(".variantImages").addClass("hidden");
+        variantSelector = '.variantImage-'+variant.id;
+        $(variantSelector).removeClass("hidden");
+
+        var variantOption1 = variant.option1.replace(/\s+/g, '-').replace(/&/g,"and");
+        variantSelector = '.variantImage-'+variantOption1;
+        //console.log(variantSelector);
+        $(variantSelector).removeClass("hidden");
+
+        var imageURL = $(variantSelector).first().prop('href');
+        $('#mainProductImage').css('background-image', 'url("'+imageURL+'")');
+      }
+      
+      function removeWhiteSpaces(word) {
+         return word.replace(/ /g, "");
+      }
+      
+      function camelCaseToDash(str) {
+          return str
+              .replace(/[^a-zA-Z0-9]+/g, '-')
+              .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+              .replace(/([a-z])([A-Z])/g, '$1-$2')
+              .replace(/([0-9])([^0-9])/g, '$1-$2')
+              .replace(/([^0-9])([0-9])/g, '$1-$2')
+              .replace(/-+/g, '-')
+              .toLowerCase();
+      }
+
+      var selectCallback = function(variant, selector) {        
+        timber.productPage({
+          money_format: "{{ shop.money_format }}",
+          variant: variant,
+          selector: selector,
+          translations: {
+            add_to_cart : "{{ 'products.product.add_to_cart' | t }}",
+            sold_out : "{{ 'products.product.sold_out' | t }}",
+            unavailable : "{{ 'products.product.unavailable' | t }}"
+          }
+        });
+        
+        displayVariantDescription(variant);
+        		
+        var url = pathname + camelCaseToDash(removeWhiteSpaces(variant.public_title));
+        window.history.replaceState({ path: url }, '', url);
+      };
+
+      $(document).ready( function(){
+        $("#promoSquare").css("min-height",$("#description").height());
+      });
+       </script>
+
+    
+    <script text="text/javascript">
+      var _learnq = _learnq || [];
+
+      var item = {
+        Name: {{ product.title|json }},
+        ProductID: {{ product.id|json }},
+        Categories: {{ product.collections|map:'title'|json }},
+        ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+        URL: "{{ shop.secure_url }}{{ product.url }}",
+        Brand: {{ product.vendor|json }},
+        Price: {{ product.price|money|json }},
+        CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+      };
+
+      _learnq.push(['track', 'Viewed Product', item]);
+      _learnq.push(['trackViewedItem', {
+        Title: item.Name,
+        ItemId: item.ProductID,
+        Categories: item.Categories,
+        ImageUrl: item.ImageURL,
+        Url: item.URL,
+        Metadata: {
+          Brand: item.Brand,
+          Price: item.Price,
+          CompareAtPrice: item.CompareAtPrice
+        }
+      }]);
+      
+      var myVar = {{template | json}}
+      console.info('AAAAAAA', myVar);
+    </script>
+    
+     {% include 'linked-options' %}
+
+
+    <style>
+      .video-wrapper {
+        padding-bottom: 35% !important;
+      }  
+    </style>{% include 'product-content.zipifypages', contentprt: 'footer' %}

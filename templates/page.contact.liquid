@@ -1,0 +1,137 @@
+<div style="background:black;">
+  <div class="grid" style="background:url('{{ 'contact_form_bg.jpg' | asset_url }}') center center no-repeat; background-size: cover;">
+
+
+
+    <div class="mobile grid__item large--one" style="text-align:center; padding:0;">
+      <div class="cust-cont-form" style="background:rgba(255,255,255,0.7); max-width:680px;margin:0 auto; color:black; padding:40px 15px 20px;">
+
+
+        <div class="grid">
+          <div class="grid__item small--one-eighth">
+            <div style="position:relative; top:22px; border-bottom:2px solid #af2a26;"></div>
+          </div>
+          <div  class="grid__item small--three-quarters">
+            <div class="asphaltic" style="font-size:3.5em; color:black;">CONTACT B.U.L.K</span></div>
+        </div>
+        <div  class="grid__item small--one-eighth">
+          <div style="position:relative; top:22px; border-bottom:2px solid #af2a26;"></div>
+        </div>
+      </div>
+
+
+      <div class="" style="font-size:1.3em; color:black; font-weight:bold;  margin:10px auto 0;">WE HAVE A<span class="red-text"> TASTING ROOM</span></div>
+      <div style="margin:0 auto;"><a href="https://goo.gl/maps/XcFg7xB92v52" style="">1931 N Gaffey St. Ste E | San Pedro, CA 90731</a></div>
+
+      <div class="" style="font-size:1em; margin:10px auto 30px;">You can also call us at <a href="tel:4245363050">(424) 536-3050</a> or by tapping, typing and sending below.</div>
+
+
+
+      {% form 'contact' %}
+
+      {% if form.posted_successfully? %}
+      <p class="note form-success">
+        {{ 'contact.form.post_success' | t }}
+      </p>
+      {% endif %}
+
+      {{ form.errors | default_errors }}
+
+      <div style="">
+        {% assign name_attr = 'contact.form.name' | t | handle %}
+        <label for="ContactFormName" class="label--hidden">{{ 'contact.form.name' | t }}</label>
+        <input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+      </div>
+
+      <div style="">
+        <label for="ContactFormEmail" class="label--hidden">{{ 'contact.form.email' | t }}</label>
+        <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+      </div>
+
+      <div style="">
+        {% assign name_attr = 'contact.form.phone' | t | handle %}
+        <label for="ContactFormPhone" class="label--hidden">{{ 'contact.form.phone' | t }}</label>
+        <input type="tel" id="ContactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}Phone{% elsif customer %}{{ customer.phone }}{% endif %}">
+      </div>
+
+      <div style="clear:both;"></div>
+      <label for="ContactFormMessage" class="label--hidden">{{ 'contact.form.message' | t }}</label>
+      <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+      <div>
+        <input type="submit"  value="I'VE SAID MY PEACE. SEND IT." class="asphaltic" style="position:relative; z-index:1; margin-top:20px; font-family:'asphaltic_scratch_rounded_pRg'; padding: 8px 12px; font-size: 2em; border-radius:0;">
+        <div style="border-bottom:2px solid #b52928; position:relative; top:-47px; z-index:0;"></div>
+      </div>
+
+
+
+      {% endform %}
+    </div>
+  </div>
+
+
+
+
+  <div class="desktop grid__item large--one" style="text-align:center; padding: 80px 10px;">
+    <div class="cust-cont-form" style="background:rgba(255,255,255,0.6); max-width:680px;margin:0 auto; color:black; padding:40px 40px 20px;">
+
+      <h1 class="asphaltic" style="font-size:3.5em; color:black;">YOU'VE GOT QUESTIONS. <span class="red-text">WE'VE GOT JERKY.</span></h1>
+
+      <div style="margin:20px auto 25px; max-width:50px; border-bottom:5px solid #af2a26;"></div>
+
+      <div class="asphaltic" style="font-size:3.5em; color:black;">WE HAVE A<span class="red-text"> TASTING ROOM</span></div>
+
+      <div class="cart-box" style="font-size:1em; margin:10px auto 0;">Come visit us at <a href="https://goo.gl/maps/XcFg7xB92v52">1931 N Gaffey St. Ste E | San Pedro, CA 90731</a></div>
+
+      <div class="cart-box" style="font-size:1em; margin:10px auto 15px;">You can also call us at <a href="tel:4245363050">(424) 536-3050</a>, or do the clicky-typy-sendy thing below.</div>
+
+      {% form 'contact' %}
+
+      {% if form.posted_successfully? %}
+      <p class="note form-success">
+        {{ 'contact.form.post_success' | t }}
+      </p>
+      {% endif %}
+
+      {{ form.errors | default_errors }}
+
+      <div style="width:33%; float:left;">
+        {% assign name_attr = 'contact.form.name' | t | handle %}
+        <label for="ContactFormName" class="label--hidden">{{ 'contact.form.name' | t }}</label>
+        <input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+      </div>
+
+      <div style="width:34%; float:left; padding-left:10px; padding-right:10px;">
+        <label for="ContactFormEmail" class="label--hidden">{{ 'contact.form.email' | t }}</label>
+        <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+      </div>
+
+      <div style="width:33%; float:right;">
+        {% assign name_attr = 'contact.form.phone' | t | handle %}
+        <label for="ContactFormPhone" class="label--hidden">{{ 'contact.form.phone' | t }}</label>
+        <input type="tel" id="ContactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}Phone{% elsif customer %}{{ customer.phone }}{% endif %}">
+      </div>
+
+      <div style="clear:both;"></div>
+      <label for="ContactFormMessage" class="label--hidden">{{ 'contact.form.message' | t }}</label>
+      <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+      <input type="submit"  value="I'VE SAID MY PEACE. SEND IT." class="asphaltic" style="font-family:'asphaltic_scratch_rounded_pRg';width:100%; padding: 8px 12px; font-size: 2em; border-radius:0;">
+
+      {% endform %}
+    </div>
+  </div>
+
+
+
+</div>
+<div>
+  {% include 'email-signup-banner' %}
+</div>
+</div>
+
+<style>
+  .main-content{
+    background:black;
+  }
+</style>

@@ -1,0 +1,196 @@
+{% assign number_of_comments = article.comments_count %}
+
+{% if comment and comment.created_at %}
+{% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+{% paginate article.comments by 10 %}
+
+<div class="section-header blog-bread section-header--breadcrumb">
+  {% include 'breadcrumb' %}
+</div>
+
+<div class="container12">
+  <div class="column12">
+    <article class="article-inner-content" itemscope itemtype="http://schema.org/Article">
+
+      <h1 >{{ article.title }}</h1>
+
+
+      <p >
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
+        {% comment %}
+        <span class="meta-sep">&#8226;</span>
+        {{ article.author }}
+        {% endcomment %}
+        {% if article.tags.size > 0 %}
+        <span class="meta-sep">&#8226;</span>
+        {% for tag in article.tags %}
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} <span class="meta-sep">&#8226;</span> {% endunless %}
+        {% endfor %}
+        {% endif %}
+      </p>
+
+      <div class="rte" itemprop="articleBody">
+
+        {% if article.image %}
+        {% assign image_alt = article.title | escape %}
+        <center> {{ article | img_url: '1024x1024' | img_tag: image_alt, 'article__image' | link_to: article.url }}</center>
+        {% endif %}
+
+        {{ article.content }}
+      </div>
+
+      {% if settings.social_sharing_blog %}
+      <hr class="hr--clear hr--small">
+      {% include 'social-sharing' %}
+      {% endif %}
+      {% comment %}
+      Create links to the next and previous articles, if available.
+      {% endcomment %}
+      {% if blog.next_article or blog.previous_article %}
+      <hr class="hr--clear hr--small">
+      <p class="clearfix">
+        {% if blog.previous_article %}
+        <span class="left">
+          &larr; {{ 'blogs.article.older_post' | t | link_to: blog.previous_article }}
+        </span>
+        {% endif %}
+        {% if blog.next_article %}
+        <span class="right">
+          {{ 'blogs.article.newer_post' | t | link_to: blog.next_article }} &rarr;
+        </span>
+        {% endif %}
+      </p>
+      {% endif %}
+
+      {% if blog.comments_enabled? %}
+      <hr class="hr--clear hr--small">
+
+      {% comment %}
+      Just like blog.liquid page, define how many comments should be on each page.
+      {% endcomment %}
+
+      {% comment %}
+      #comments is required, it is used as an anchor link by Shopify.
+      {% endcomment %}
+      <div id="comments">
+
+        {% if comment and comment.created_at %}
+        <p class="note form-success">
+          {% if blog.moderated? %}
+          {{ 'blogs.comments.success_moderated' | t }}
+          {% else %}
+          {{ 'blogs.comments.success' | t }}
+          {% endif %}
+        </p>
+        {% endif %}
+
+        {% if number_of_comments > 0 %}
+        <ul>
+          {% comment %}
+          If a comment was just submitted with no blank field, show it.
+          {% endcomment %}
+          {% if comment and comment.created_at %}
+          <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
+            {% include 'comment' %}
+          </li>
+          {% endif %}
+
+          {% comment %}
+          Showing the rest of the comments.
+          {% endcomment %}
+          {% for comment in article.comments %}
+          <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+            {% include 'comment' %}
+          </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+        <hr class="--clear hr--small">
+        <div class="text-center">
+          {% include 'pagination-custom' %}
+        </div>
+        {% endif %}
+
+        <hr class="hr--clear hr--small">
+
+        {% endif %}
+
+        <!--               {% comment %}
+Comment submission form
+{% endcomment %}
+{% form 'new_comment', article %}
+
+<h4>{{ 'blogs.comments.title' | t }}</h4>
+
+{{ form.errors | default_errors }}
+
+<div class="grid">
+
+<div class="grid__item large--one-half">
+<label for="CommentAuthor" class="label--hidden">{{ 'blogs.comments.name' | t }}</label>
+<input {% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" placeholder="{{ 'blogs.comments.name' | t }}" id="CommentAuthor" value="{{ form.author }}" autocapitalize="words">
+
+<label for="CommentEmail" class="label--hidden">{{ 'blogs.comments.email' | t }}</label>
+<input {% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" placeholder="{{ 'blogs.comments.email' | t }}" id="CommentEmail" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+</div>
+
+<div class="grid__item">
+<label for="CommentBody" class="label--hidden">{{ 'blogs.comments.message' | t }}</label>
+<textarea {% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="CommentBody" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+</div>
+
+</div>
+
+{% if blog.moderated? %}
+<p><small>{{ 'blogs.comments.moderated' | t }}</small></p>
+{% endif %}
+
+<input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
+
+{% endform %}
+-->
+      </div>
+
+      {% endif %}
+
+
+    </article>
+  </div>
+
+<!--   <div class="column4">
+    <aside class="sidebar  cust-side">
+      {% include 'blog-sidebar' %}
+    </aside>
+  </div> -->
+
+</div>
+
+{% endpaginate %}
+
+{% include 'email-signup-banner' %}
+
+<div style="padding:0 10px;">
+  <div id="disqus_thread" style="margin:30px auto; max-width:1000px;"></div>
+</div>
+<script>
+
+  /**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bulkbeefjerky.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

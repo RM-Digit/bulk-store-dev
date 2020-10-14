@@ -1,0 +1,90 @@
+
+ {{ 'owl.carousel.css' | asset_url | stylesheet_tag }}
+ {{ 'owl.theme.css' | asset_url | stylesheet_tag }}
+
+
+{% assign number_of_products = 6 %}
+{% assign number_of_products_to_fetch = number_of_products | plus: 1 %}
+
+{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+  {% assign found_a_collection = false %}
+  {% for c in product.collections %}
+    {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+      {% assign found_a_collection = true %}
+      {% assign collection = c %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if collection and collection.products_count > 1 %}
+  <hr class="hr--clear hr--small">
+  <div class="section-header section-header--medium">
+  <!--  <h4 class="section-header__title">{{ 'products.general.related_products_title' | t }}</h4> -->
+  <div class="section-header__title"><span>RELATED PRODUCTS</span></div>
+  </div>
+ 
+
+
+<div id="owl-demo1">
+  
+   {% assign current_product = product %}
+    {% assign current_product_found = false %}
+    {% for product in collection.products  %} 
+  
+      <div class="item"> 
+	
+       <a href="{{ product.url | within: collection }}" class="grid-link text-center">
+         <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+       
+         <p>{{ product.title }}</p>
+    
+       </a>
+     </div>
+  {% endfor %}
+     
+  </div>
+
+{% endif %}
+ {{ 'jquery-1.9.1.min.js'  | asset_url | script_tag }}
+ {{ 'owl.carousel.js'  | asset_url | script_tag }}
+
+
+<style>
+  .cus-pro {
+    color: #000;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  #owl-demo1 .item{
+    margin: 3px;
+  }
+  #owl-demo1 .item img{
+    display: block;
+    width: 100%;
+    height: 200px;
+    opacity: 0.7;
+  }
+  #owl-demo1 .item img:hover{
+    opacity: 1;
+  }
+  .owl-item p {
+    color: #b82c2e;
+  }
+</style>
+
+<script>
+  $(document).ready(function() {
+ 
+  $("#owl-demo1").owlCarousel({
+ 
+      autoPlay: 10000, //Set AutoPlay to 3 seconds
+ 
+      items : 6,
+      itemsDesktop : [1199,3],
+      itemsDesktopSmall : [979,2]
+ 
+  });
+ 
+});
+</script>

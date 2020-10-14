@@ -1,0 +1,179 @@
+
+<div class="container12 account_page_section" style="color:black; margin-bottom:60px;">
+
+  <div class="account_heading_block"  style="margin-top:60px; padding-bottom:8px; border-bottom:2px solid #6a6a6a;">
+    <div class="asphaltic" style="font-size:4em;">My <span class="red-text">Account</span></div>
+    <h5 class="account-cust-text">Contact <span>BULK</span></h5>
+  </div>
+
+
+  <div class="column4">
+
+    <div class="account-nav"><span style="border-bottom: 2px solid #af2a26; color: #af2a26">ORDERS</span></div>
+
+    <!--<div class="customer-section-header" style="margin:30px 0 0; color:black;">{{ customer.name }}</div>-->
+    
+    {% if customer.metafields.subscriptions.customer_string %}
+<!--BeginRechargeCode-->
+<p><a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/">Manage Subscriptions</a></p>
+<!--EndRechargeCode-->
+{% endif %}<br>
+
+    <!--     <p><a href="/tools/checkout/front_end/login" class="text-link">Manage Subscription</a></p> -->
+
+    {% if customer.default_address != nil %}
+    <!--<p>-->
+    <!--{{ customer.default_address.address1 }}<br>-->
+
+    <!--{% if customer.default_address.address2 != "" %}-->
+    <!--{{ customer.default_address.address2 }}<br>-->
+    <!--{% endif %}-->
+
+    <!--{% if customer.default_address.city != "" %}-->
+    <!--{{ customer.default_address.city }},&nbsp;-->
+    <!--{% endif %}-->
+
+    <!--{% if customer.default_address.province_code != "" %}-->
+    <!--{{ customer.default_address.province_code | upcase }}&nbsp;-->
+    <!--{% endif %}-->
+
+    <!--{% if customer.default_address.zip != "" %}-->
+    <!--{{ customer.default_address.zip | upcase }}<br>-->
+    <!--{% endif %}-->
+
+    <!--{% if customer.default_address.country != "" %}-->
+    <!--{{ customer.default_address.country }}<br>-->
+    <!--{% endif %}-->
+
+    <!--{% if customer.default_address.phone != "" %}-->
+    <!--Phone: {{ customer.default_address.phone }}-->
+    <!--{% endif %}-->
+    <!--</p>-->
+
+    {% endif %}
+
+
+    <a href="/account/addresses" class="account-nav" >ADDRESSES</a>
+
+    <a href="/tools/checkout/front_end/login" class="account-nav">SUBSCRIPTIONS</a>
+
+    <!--------------------- Recharge Subscription ----------------------->
+    {% if customer.metafields.subscriptions.customer_string %}
+
+    <a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/" class="account-nav">JERKY OF THE MONTH</a>
+
+    {% endif %}
+    <!--------------------- END Recharge Subscription ----------------------->
+
+    <a href="/account/logout" class="account-nav">LOG OUT</a>
+
+  </div>
+
+
+  <div class="column8 desktop" style="border-left:2px solid #6a6a6a; padding-left:40px;">
+    <div class="customer-section-header" style="margin-bottom:10px;">{{ 'customer.orders.title' | t }}</div>
+
+
+
+
+    {% comment %}
+    If we have past orders, loop through each one
+    {% endcomment %}
+
+    {% paginate customer.orders by 20 %}
+
+    {% if customer.orders.size != 0 %}
+
+    <div class="table-wrap">
+      <table class="full desktop" id="orderTable">
+        <thead>
+          <tr>
+            <th>ORDER</th>
+            <th>DATE</th>
+            <!--<th>{{ 'customer.orders.payment_status' | t }}</th>-->
+            <th>STATUS</th>
+            <th>TOTAL</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in customer.orders %}
+          <tr>
+            <td style="font-weight: bold">{{ order.name | link_to: order.customer_url }}</td>
+            <td>{{ order.created_at | date: "%b %d, %Y" }}</td>
+            <!--<td>{{ order.financial_status_label }}</td>-->
+            <td>{{ order.fulfillment_status_label }}</td>
+            <td>{{ order.total_price | money }}</td>
+            <td class="account-view-btn">{{ 'VIEW' | link_to: order.customer_url }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+    {% else %}
+
+    <p>{{ 'customer.orders.none' | t }}</p>
+
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+    <div class="text-center">
+      {% include 'pagination-custom' %}
+    </div>
+    {% endif %}
+
+    {% endpaginate %}
+
+  </div>
+
+
+
+
+
+  <div class="column8 mobile" style="">
+    <div class="customer-section-header" style="margin-bottom:10px;">{{ 'customer.orders.title' | t }}</div>
+    {% comment %}
+    If we have past orders, loop through each one
+    {% endcomment %}
+
+    {% paginate customer.orders by 20 %}
+
+    {% if customer.orders.size != 0 %}
+    <hr>
+    {% for order in customer.orders %}
+    <div>
+      Order&nbsp;{{ order.name | link_to: order.customer_url }}
+    </div>
+    <div>
+      {{ order.created_at | date: "%b %d, %Y" }}
+    </div>
+    <div>
+      Total: {{ order.total_price | money }}
+    </div>
+    <div>
+      Status: {{ order.fulfillment_status_label }}
+    </div>
+    <hr>
+    {% endfor %}
+
+    {% else %}
+
+    <p>{{ 'customer.orders.none' | t }}</p>
+
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+    <div class="text-center">
+      {% include 'pagination-custom' %}
+    </div>
+    {% endif %}
+
+    {% endpaginate %}
+
+  </div>
+
+
+
+</div>

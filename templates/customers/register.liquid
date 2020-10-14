@@ -1,0 +1,45 @@
+
+<div  style="background:url('{{ 'login_bg.jpg' | asset_url }}') center center no-repeat; background-size: cover; padding: 80px 0">
+<div style="text-align: center; margin-bottom:30px;">
+  <img src="{{ 'bulkArm.png' | asset_url }}">
+</div>
+
+<div class="account-box" style="" >
+    <div class="">
+      <h1 class="asphaltic" style="font-size: 5.9em; color:white; margin-bottom:30px;">Create Account</h1>
+    </div>
+
+    {% comment %}
+      This form must use 'create_customer'
+    {% endcomment %}
+    {% form 'create_customer' %}
+
+      {{ form.errors | default_errors }}
+
+      <label for="FirstName" class="label--hidden">{{ 'customer.register.first_name' | t }}</label>
+      <input type="text" class="login-input" style="background: none; color:white;" name="customer[first_name]" id="FirstName" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+
+      <label for="LastName" class="label--hidden">{{ 'customer.register.last_name' | t }}</label>
+      <input type="text" class="login-input" style="background: none; color:white;" name="customer[last_name]" id="LastName" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+
+      <label for="Email" class="label--hidden">{{ 'customer.register.email' | t }}</label>
+      <input type="email" class="login-input" style="background: none; color:white;" name="customer[email]" id="Email" placeholder="{{ 'customer.register.email' | t }}" {% if form.errors contains "email" %} class="error"{% elsif form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+
+      <label for="CreatePassword" class="label--hidden">{{ 'customer.register.password' | t }}</label>
+      <input type="password" class="login-input" style="background: none; color:white;" name="customer[password]" id="CreatePassword" placeholder="{{ 'customer.register.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+
+  <input type="submit" class="" value="CREATE" style="color:white; background: #006600; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px;">
+<br>
+  <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+
+
+
+  {% endform %}
+
+  </div>
+
+  <div style="text-align: center; margin-top:30px;">
+    <img src="{{ 'bulkArm.png' | asset_url }}">
+  </div>
+
+</div>

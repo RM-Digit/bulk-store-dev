@@ -1,0 +1,81 @@
+
+
+<div class="bulk-section-header-wrapper">
+  <div class="bulk-section-header-wrapper">
+    <div class="bulk-section-header">
+      Categories
+    </div>
+    <div class="bulk-section-header-line"></div>
+  </div>
+</div>
+
+
+
+<div class="grid-uniform grid-link__container" style="position: relative; top:-50px;">
+
+  {% assign grid_item_width = 'large--one-quarter medium--one-quarter small--one-half' %}
+
+  <div class="ccarousel-2"><!-- custom carousel starts-->
+    <input type="hidden" class="totalprod-2" value="{{ collections['shop'].products | size }}">
+    <button class="btnL-2"><img src="{{ 'caretLeft.png' | asset_url  }}" height="120px" width="50px"></button>
+
+    <div class="mainn">
+      <ul class="inner" style="">
+
+        {% for product in collections['shop'].all_products %}
+        <li class="item-display-box-wrapper">
+          <a href="{{ product.url }}" >
+            <div class="item-display-box" style="top:0px; position: relative;">
+               <img class="item-display-box-image lazyload" style="min-height:50px; " data-src="{{ product.featured_image | img_url: 'medium' }}"/>
+              <div class="red-text" style="text-align: center; font-size:1.2em; font-weight: 500;">{{ product.title | upcase }}</div>
+
+              <div class="" style="color:black; font-family:avenir; font-size: 1.2em; text-align:center;">
+                {% if product.metafields.descriptions.collection %}
+                {{ product.metafields.descriptions.collection }}
+                {% endif %}
+              </div>
+
+              <div class="product-display-box-price"></div>
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+
+
+      </ul>
+    </div>
+
+    <button class="btnR-2"><img src="{{ 'caretRight.png' | asset_url  }}" height="120px" width="50px"></button>
+    <div style="clear:both;"></div>
+  </div><!-- custom carousel ends-->
+
+</div>
+
+
+
+
+<script>
+  $(document).ready(function(){
+    var itemDisplayBoxWidthFactor = 1;
+    if($( window ).width() < 760 ){
+      itemDisplayBoxWidthFactor = 0.7;
+      $('.item-display-box-wrapper').each(function(){
+        var setWidth = $( window ).width() - 92;
+        $(this).css('width',setWidth);
+//         console.log($( document ).width());
+//         console.log($( window ).width());
+//         console.log('Set width:'+setWidth);
+      });
+    }
+
+    $(".item-display-box").each(function () {
+      $(this).css('max-height', $(this).width() + 60)
+    });
+
+    $(".item-display-box-image").each(function () {
+      $(this).css('height', $(this).width() * itemDisplayBoxWidthFactor)
+    });
+  });
+</script>
+
+<script type="text/javascript" src="{{ 'custom-carousel-2.js' | asset_url }}" async defer> </script>

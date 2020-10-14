@@ -1,0 +1,1104 @@
+{% assign zp_use_favicon = false %}{% assign zp_use_meta_tags = false %}{% assign zp_use_open_graph_tags = false %}{% if template contains 'article' and blog.metafields.blogfeeder.use_canonical == 'yes' %}{% assign canonical_url = article.metafields.blogfeeder.canonical %}{% endif %}
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]>
+<html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta name="google-site-verification" content="VkCaC06UH3atJ7VmAt7Wr1VIwno1XWfTk9z1UwF4nVg" />
+
+    <!-- Basic page needs ================================================== -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    {% if settings.favicon_enable %}
+    <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png"/>
+    {% endif %}
+
+    <script type='text/javascript'>
+      window._tfa = window._tfa || [];
+      window._tfa.push({notify: 'event', name: 'page_view'});
+      !function (t, f, a, x) {
+        if (!document.getElementById(x)) {
+          t.async = 1;t.src = a;t.id=x;f.parentNode.insertBefore(t, f);
+        }
+      }(document.createElement('script'),
+        document.getElementsByTagName('script')[0],
+        '//cdn.taboola.com/libtrc/unip/1148024/tfa.js',
+        'tb_tfa_script');
+    </script>
+    <noscript>
+      <img src='//trc.taboola.com/1148024/log/3/unip?en=page_view'
+           width='0' height='0' style='display:none'/>
+    </noscript>
+
+    <!-- Title and description ================================================== -->
+    <title>
+      {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{
+        'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page'
+        | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %}
+      &ndash; {{ shop.name }}{% endunless %}
+    </title>
+
+    {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    <!-- Social meta ================================================== -->
+    {% include 'social-meta-tags' %}
+
+
+    <!-- Helpers ================================================== -->
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+
+    <!-- CSS ================================================== -->
+
+    <!--{{ 'aventir.css' | asset_url | stylesheet_tag }}-->
+    {{ 'asphaltic.css' | asset_url | stylesheet_tag }}
+    {{ 'bou-western.css' | asset_url | stylesheet_tag }}
+
+    {{ 'bjqs.css' | asset_url | stylesheet_tag }}
+    <link href="{{ 'demo.css' | asset_url }}" rel="stylesheet" type="text/css" media="all" />
+
+    {{ 'style.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+    <style>
+      #carouselWrapper {
+        position: relative;
+        overflow: hidden;
+      }
+      #carousel {
+        position: absolute;
+        visibility: hidden;
+      }
+      button#prev, button#next{
+        width: 76%; 
+      }
+      #carousel .pictureFrame img {
+        cursor: pointer;
+      }
+    </style>
+
+    <!--  custom css  -->
+    {{ '1140.css' | asset_url | stylesheet_tag }}
+    {{ 'Responsive.css' | asset_url | stylesheet_tag }}
+    {{ 'recharge.css' | asset_url | stylesheet_tag }}
+
+    {% include 'google-fonts' %}
+
+    <link href="https://fonts.googleapis.com/css?family=Maiden+Orange|Rye" rel="stylesheet">
+
+    <!-- Header hook for plugins ================================================== -->
+    {% comment %}{{ content_for_header }}{% endcomment %}{% capture zp_include_html %}{% include 'header-scripts.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/header-scripts.zipifypages.liquid' or zp_include_html contains 'Liquid error: Could not find asset snippets/page-content-parser.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}
+
+
+
+    {% include 'oldIE-js' %}
+
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js' | script_tag}}
+    <script type="text/javascript" src="{{ 'modernizr.min.js' | asset_url }}"> </script>
+
+    <script type="text/javascript" src="{{ 'bjqs-1.3.min.js' | asset_url }}"> </script>
+
+    <script type="text/javascript" src="{{ 'simple-vertical-carousel.js' | asset_url }}"> </script>
+
+
+    {% comment %}
+    If you store has customer accounts disabled, you can remove the following JS file
+    {% endcomment %}
+    {% if template contains 'customers' %}
+
+    <script type="text/javascript" src="{{ 'shopify_common.js' | shopify_asset_url }}"> </script>
+
+    {% endif %}
+
+    <script type="text/javascript">
+      //jQuery('.snize-ac-results ul').next().css('display','none');  
+    </script>
+
+    <script type="text/javascript" src="https://judge.me/shopify.js"></script>
+
+    <style>
+      .product_rp_div, .frequency_num, .frequency_type {
+        color: black;
+      }
+
+      .product_rp_cart_div {
+        display: inline-block;
+      }
+
+      .frequency_label {
+        display: -webkit-inline-box;
+      }
+
+    </style>
+
+    <!-- Hits Analytics tracking code -->
+    {% if shop.customer_accounts_enabled %}
+    {% if customer %}
+    <script type="text/javascript">
+      function hitsReady()
+      {
+        if (typeof hits != 'undefined') {
+          hits('user', 'identify', {'id': '{{ customer.id }}'});
+                                   } else {
+               setTimeout(hitsReady, 500);
+        }
+      }
+
+      window.attachEvent ? window.attachEvent('onload', hitsReady) : window.addEventListener('load',
+                                                                                             hitsReady, false);
+    </script>
+    {% endif %}
+    {% endif %}
+    <!-- end of Hits Analytics code -->
+
+    <!-- Font Awesome  -->
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+
+    <!-- Global site tag (gtag.js) - AdWords: 1030361146 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1030361146"></script>
+
+    <script type="application/javascript">
+      (function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({'projectId':'10000','properties':{'pixelId':'10056962'}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js","dotq");
+    </script>
+
+    {{ 'bold-brain-widget.css' | asset_url | stylesheet_tag }}
+
+    {% include 'bold-common' %}
+    {% include 'bold-ro-init' %}
+    <script data-cfasync="false" type="text/javascript" async src="https://cdn.judge.me/shopify.js"></script>
+  </head>
+
+  <body id="{{ page_title | handle }}"
+        class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+
+    <!-- FB Share SDK ---->
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js     = d.createElement(s);
+  js.id  = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <!-- Pintrest Share SDK ---->
+    <script
+            type="text/javascript"
+            async defer
+            src="//assets.pinterest.com/js/pinit.js"
+            >
+
+    </script>
+
+    <script type="text/javascript">
+      var im_domain = 'bulkbeefjerky';
+      var im_project_id = 1;
+      (function(e,t){window._improvely=[];var n=e.getElementsByTagName("script")[0];var r=e.createElement("script");r.type="text/javascript";r.src="https://"+im_domain+".iljmp.com/improvely.js";r.async=true;n.parentNode.insertBefore(r,n);if(typeof t.init=="undefined"){t.init=function(e,t){window._improvely.push(["init",e,t])};t.goal=function(e){window._improvely.push(["goal",e])};t.conversion=function(e){window._improvely.push(["conversion",e])};t.label=function(e){window._improvely.push(["label",e])}}window.improvely=t;t.init(im_domain,im_project_id)})(document,window.improvely||[])
+    </script>
+
+
+    {% comment %}
+    {% include 'header-signup' %}
+    {% endcomment %}
+
+
+    {% include 'header-bar' %}
+
+    <header class="site-header desktop" role="banner">
+      <div class="grid--full white-text" style="margin-bottom:10px; border-bottom:2px solid #464646;">
+
+        <div id="customerServiceButton" class="grid__item small--one-quarter medium--one-sixth large--one-sixth"
+             style="text-align: center; padding:8px 15px; font-weight: 500; cursor: pointer; position: relative;">
+          Customer
+          Service
+          <i class="fas fa-caret-down red-text" style="margin-left:4px;"></i>
+          <i class="fas fa-caret-up red-text hidden" style="margin-left:4px;"></i>
+
+
+
+          <div id="customerServiceMenu" style="position: absolute; top:0; left:35%; z-index:1000; padding-top:50px;">
+
+
+
+            <div id="" class="customerServiceMenu header-menu" style="position: relative; background:white; border-radius: 8px; padding:0; min-width: 200px;">
+              <div class="nav-arrow"></div>
+              <!--{{ menu.title }}-->
+              <!--<i class="fas fa-sort-down red-text" style="margin-left:10px;"></i>-->
+
+              <div class="nav-menu-wrapper" style="text-align: left;">
+                <a href="/pages/beef-jerky-about-us" class="nav-menu-header" style="font-size: 1em; color: black;">About Us</a>
+                <a href="/pages/bulk-beef-jerky-contact-us" class="nav-menu-header" style="font-size: 1em; color: black;">Contact Us</a>
+                <a href="/pages/beef-jerky-faq" class="nav-menu-header" style="font-size: 1em; color: black;">Shipping Info</a>
+                <a href="/pages/customer-service" class="nav-menu-header" style="font-size: 1em; color: black;">Return Policy</a>
+                <a href="/pages/beef-jerky-faq" class="nav-menu-header" style="font-size: 1em; color: black;">FAQ</a>
+                <a href="/pages/store-locator" class="nav-menu-header" style="font-size: 1em; color: black;">Store Locator</a>
+                <a href="/pages/blogs" class="nav-menu-header" style="font-size: 1em; color: black;">Blog</a>
+                <!--<a href="/pages/terms-conditions" class="nav-menu-header" style="font-size: 1em; color: black;">Terms & Conditions</a>-->
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="grid__item small--two-quarters medium--four-sixths large--four-sixths"
+             style="border:2px solid #464646; border-bottom:0; border-top:0; border-right:0; padding:8px 15px; text-align: center; font-weight: 500;">
+          Got beef? Give us a call at <a href="tel:+14245363050"><span class="red-text">424.536.3050</span></a>
+        </div>
+        <div class="grid__item small--one-quarter medium--one-sixth large--one-sixth"
+             style="white-space:nowrap; text-align: center; padding:8px 15px; font-weight: 500;">
+          <a href="https://www.bulkjerky.com" style="color:white;">Wholesale</a>
+        </div>
+      </div>
+
+      <div class="grid--full white-text">
+        <div class="grid__item small--zero medium--one-twelfth large--one-twelfth header_main_logo">
+
+          <a href="/" class="small--hide medium--hide nav-btn-padding" style="display: inline-block; float:right; position: relative; top:0px;">
+            <img src="{{ 'bulkArm.png' | asset_url  }}">
+          </a>
+          <div style="clear:both"></div>
+
+        </div>
+        <div class="grid__item small--six-twelfths medium--five-twelfths large--two-twelfths nav-padding header_shop_link_block"
+             style="position:relative; vertical-align: middle">
+
+          <div id="shopNavWrapper" >
+            <a href="{{ collections['shop'].url }}" class="nav-btn-padding" style="display: inline-block; float:left; cursor: pointer; color:white;" id="shopNavButton">
+              {% assign menu = linklists.main-menu %}
+              Shop
+              <i class="fas fa-caret-down red-text" style="margin-left:4px;"></i>
+              <i class="fas fa-caret-up red-text hidden" style="margin-left:4px;"></i>
+            </a>
+
+            <div id="shopnNavMenu" style="position: absolute; top:0; left:0; z-index:1000; padding-top:64px;">
+
+              <div class="shopNavMenu header-menu" style="background:white; border-radius: 8px; position: relative; ">
+                <div class="nav-arrow"></div>
+
+
+
+
+                {% for product in collections['shop'].products %}
+
+
+                <div class="nav-menu-wrapper" style="width:100%;{% if forloop.last %}border-radius:0 0 8px 8px;{% endif %}">
+                  <a href="{{ product.url }}" style="display:block; padding:12px 8px 4px">
+                    <div style="position:relative;">
+                      <div style="display:inline-block; width:30px; height:30px; border-radius:50%; background:grey url('{{ product.featured_image | img_url }}') no-repeat center; background-size:contain; box-shadow:0 0 5px grey;"></div>
+                      <span style="font-size: 0.9em; font-weight: bold; position:relative; top:3px; vertical-align:top; padding:0 1em 0 0.5em;">{{ product.title }}</span>
+                      <span class="fas fa-caret-right red-text" style="position:absolute; top:7px; right:0; "></span>
+                    </div>
+                  </a>
+                </div>
+
+
+
+                {% endfor %}
+
+
+
+
+                {% for link in menu.links %}
+
+
+                <div style="position:relative; z-index:1;">
+
+
+                  <div class="nav-menu-wrapper" style="width:100%; float:left;padding-bottom: 15px;">
+                    <div class="" style="">
+                      <a href="{{ link.url }}" style="font-size: 0.9em; font-weight: bold">{{ link.title }}</a>
+                    </div>
+
+                    {% for sub_link in link.links %}
+                    <a href="{{ sub_link.url }}" class="" style="">
+
+                      <div style="font-size: 0.75em;">
+
+                        {{sub_link.title }}
+                      </div>
+
+                    </a>
+                    {% for sub_sub_link in sub_link.links %}
+                    {{ sub_sub_link.title }}
+
+                    {% endfor %}
+                    {% endfor %}
+
+                  </div>
+
+
+                </div>
+                <div style="clear: both;"></div>
+
+
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+
+          <script>
+            $(document).ready(function () {
+              return;
+
+              var hoverElement;
+              var allowClose;
+              var allowOpen;
+              var navMenuTimeout;
+
+
+              $("#shopNavButton").click(function () {
+                console.log("shopNavButton click");
+                toggleNavMenu(true, true);
+                hideCSMenu();
+              }).mouseenter(function () {
+                console.log("shopNavButton mouseenter");
+                allowClose = false;
+                allowOpen = true;
+                if (hoverElement === $(this)) {
+                  allowOpen = false;
+                }
+                toggleNavMenu(allowClose, allowOpen);
+                hoverElement = $(this);
+                clearTimeout(navMenuTimeout);
+              }).mouseleave(function () {
+                console.log("shopNavButton mouseleave");
+
+                allowOpen = false;
+                allowClose = false;
+                if ($(hoverElement).attr('id') === $(this).attr('id')) {
+                  //allowClose = true;
+                }
+
+                toggleNavMenu(allowClose, allowOpen);
+
+
+                var thisEl = $(this);
+
+                navMenuTimeout = setTimeout(function(){
+                  console.log('timeout start');
+                  console.log($(hoverElement).attr('id'));
+                  console.log($(thisEl).attr('id'));
+                  if ($(hoverElement).attr('id') === $(thisEl).attr('id')) {
+                    allowClose = true;
+                    toggleNavMenu(allowClose, allowOpen);
+                    console.log('timeout match');
+                    hoverElement = null;
+                  }
+                }, 500);
+              });
+
+              $("#shopnNavMenu").mouseenter(function () {
+                return false;
+                console.log("shopnNavMenu mouseenter");
+                allowClose = false;
+                allowOpen = false;
+                if (hoverElement === $(this)) {
+                  allowClose = true;
+                }
+                toggleNavMenu(allowClose, allowOpen);
+                hoverElement = $(this);
+                clearTimeout(navMenuTimeout);
+              }).mouseleave(function () {
+                console.log("shopnNavMenu mouseleave");
+                toggleNavMenu(false, false);
+
+                var thisEl = $(this);
+                navMenuTimeout = setTimeout(function(){
+                  console.log('timeout start');
+                  console.log($(hoverElement).attr('id'));
+                  console.log($(thisEl).attr('id'));
+                  if ($(hoverElement).attr('id') === $(thisEl).attr('id')) {
+                    allowClose = true;
+                    toggleNavMenu(allowClose, allowOpen);
+                    console.log('timeout match');
+                    hoverElement = null;
+                  }
+                }, 500);
+              });
+
+              var displayNavMenu = false;
+
+              function toggleNavMenu(allowClose, allowOpen)
+              {
+                console.log("toggleNavMenu("+allowClose+","+allowOpen+")");
+                if (displayNavMenu) {
+                  if (allowClose) {
+                    hideMenu();
+                    displayNavMenu = false;
+                  }
+                } else {
+                  if (allowOpen) {
+                    showMenu();
+                    displayNavMenu = true;
+                  }
+                }
+              }
+
+              function showMenu()
+              {
+                console.log("showMenu");
+                $("#shopnNavMenu").removeClass("closeMenu").addClass("openMenu");
+
+                $("#shopNavButton").find(".fa-caret-down").addClass("hidden");
+                $("#shopNavButton").find(".fa-caret-up").removeClass("hidden");
+              }
+
+              function hideMenu()
+              {
+                console.log("hideMenu");
+                $("#shopnNavMenu").addClass("closeMenu").removeClass("openMenu");
+                $("#shopNavButton").find(".fa-caret-down").removeClass("hidden");
+                $("#shopNavButton").find(".fa-caret-up").addClass("hidden");
+              }
+
+              $(".nav-menu-header").click(function(){
+                console.log('$(this).hasClass(\'open-menu-item\'):'+$(this).hasClass('open-menu-item'));
+
+                if($(this).hasClass('open-menu-item') === false) {
+                  console.log('ADD OPEN MENU ITEM');
+                  $(this).find('.fa-caret-down').addClass('hidden');
+                  $(this).find('.fa-caret-up').removeClass('hidden');
+                  $(this).addClass('open-menu-item');
+                  $(this).parent().find('.nav-menu-item').each( function(){
+                    $(this).removeClass('hidden');
+                  });
+
+                } else {
+                  console.log('REMOVE OPEN MENU ITEM');
+                  $(this).find('.fa-caret-up').addClass('hidden');
+                  $(this).find('.fa-caret-down').removeClass('hidden');
+                  $(this).removeClass('open-menu-item');
+                  $(this).parent().find('.nav-menu-item').each( function(){
+                    $(this).addClass('hidden');
+                  });
+
+                }
+              });
+
+
+              $("#customerServiceButton").click(function () {
+                console.log("customerServiceButton click");
+                toggleCSMenu(true, true);
+                hideMenu();
+              });
+              var displayCSMenu = false;
+              function toggleCSMenu(allowClose, allowOpen)
+              {
+                console.log("toggleCSMenu("+allowClose+","+allowOpen+")");
+                if (displayCSMenu) {
+                  if (allowClose) {
+                    hideCSMenu();
+                    displayCSMenu = false;
+                  }
+                } else {
+                  if (allowOpen) {
+                    showCSMenu();
+                    displayCSMenu = true;
+                  }
+                }
+
+              }
+
+              function showCSMenu()
+              {
+                console.log("showCSMenu");
+                $("#customerServiceMenu").removeClass("closeMenu").addClass("openMenu");
+
+                $("#customerServiceButton").find(".fa-caret-down").addClass("hidden");
+                $("#customerServiceButton").find(".fa-caret-up").removeClass("hidden");
+              }
+
+              function hideCSMenu()
+              {
+                console.log("hideCSMenu");
+                $("#customerServiceMenu").addClass("closeMenu").removeClass("openMenu");
+                $("#customerServiceButton").find(".fa-caret-down").removeClass("hidden");
+                $("#customerServiceButton").find(".fa-caret-up").addClass("hidden");
+              }
+            });
+          </script>
+
+
+
+          <a href="https://www.bulkbeefjerky.com/products/bulk-jerky-of-the-month-club"><span class="nav-btn-padding header_jk_month" style="color:white; display: inline-block; float:left;">Jerky of the Month</span></a>
+          <div style="clear: both;"></div>
+        </div>
+
+        <div class="grid__item small--zero medium--zero large--six-twelfths nav-padding desktop">
+
+          <div class="desktop" style="position: relative; width: 100%;">
+            <form action="/search" method="get" class="header-bar__search-form clearfix" role="search">
+              <input type="search" name="q" value="" aria-label="Search" class="header-bar__search-input"
+                     style="width: 100% !important; background: #c5c5c5; border:0;"
+                     placeholder="Search">
+              <button type="submit" class="btn icon-fallback-text header-bar__search-submit"
+                      style="background: transparent; position: absolute !important; top:0px !important; right:24px !important;">
+                <span class="icon icon-search" aria-hidden="true"></span>
+                <span class="fallback-text"></span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+
+        <div class="grid__item small--six-twelfths medium--five-twelfths large--two-twelfths nav-padding" style="text-align: right; position:relative; vertical-align: middle">
+
+          <div class="" style="position: relative; display: inline-block; float:right; margin-left:12px;">
+
+            <a href="/cart" class="cart-page-link " id="my_cart">
+              <div style="position: relative;">
+                <div class="cart-count red-text" data-cart-item-count
+                     style="text-align: center; font-size:1.2em; font-weight:bold; position: relative; top:-0px; left:4px;">
+                  {{cart.item_count}}
+                </div>
+                <div style="text-align: center; font-weight:bold; position: relative; top:-10px;">
+                  <!--<i class="fas fa-shopping-cart white-text"></i>-->
+                  <img src="{{  'cart.png' | asset_url }}">
+                </div>
+              </div>
+
+            </a>
+          </div>
+
+          <div class="nav-btn-padding signin_header_block" style="float:right; position: relative; top:20px; padding-bottom:15px;">
+            {% if customer %}
+            <a href="/account" style="color:white; font-weight:400;">Account</a>
+            {% else %}
+            <a href="/account" class="" style="color:white; font-weight:400;">Sign In/Create Account</a>
+            {% endif %}
+          </div>
+
+
+
+          <div style="clear: both;"></div>
+        </div>
+        <div class="grid__item small--zero medium--zero large--one-twelfth">
+        </div>
+      </div>
+
+
+      <div class="grid--full mobile">
+        <div class="mobile grid__item small--whole medium--whole large--zero" style="background:black;">
+          <div class="mobile" style="position: relative; width: 100%; padding:0 12px;">
+            <form action="/search" method="get" class="header-bar__search-form clearfix" role="search">
+              <input type="search" name="q" value="" aria-label="Search" class="header-bar__search-input"
+                     style="width: 100% !important; background: #c5c5c5; border:0; margin:0 auto;"
+                     placeholder="Search">
+              <button type="submit" class="btn icon-fallback-text"
+                      style="background: transparent; position: absolute !important; top:0px !important; right:0px !important; padding:3px 6px !important">
+                <span class="icon icon-search" aria-hidden="true"></span>
+                <span class="fallback-text"></span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--<div class="container12" id="wrap-header">-->
+      {% include 'judgeme_html_miracle' %}
+
+
+    </header>
+
+    <main class="wrapper main-content" role="main" style="">
+      {% comment %}{{ content_for_layout }}{% endcomment %}{% capture zp_include_html %}{% include 'page-content.zipifypages' %}{% endcapture %}{% if zp_include_html contains 'Liquid error: Could not find asset snippets/page-content.zipifypages.liquid' %}{{ page.content | strip }}{% else %}{{ zp_include_html | strip }}{% endif %}{% assign zp_include_html =  %}
+    </main>
+
+    <footer style="background: black;">
+      <div class="grid--full" style="padding:30px 10px;">
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+        <div class="grid__item small--whole medium--whole large--ten-twelfths">
+          <div class="grid--full ">
+            <div class="grid__item small--whole medium--whole large--five-twelfths footer-wrapper">
+              <div class="asphaltic red-text" style="font-size: 2.8em;">Who We Are</div>
+              <div>
+                B.U.L.K stands for Building Up Lives with Kindness. We do not have customers, we have one big family. To everyone that is new, we welcome you to the B.U.L.K Fam!
+              </div>
+              <div style="font-weight: bold">
+                1931 N Gaffey St #E<br>
+                San Pedro, CA 90731
+              </div>
+            </div>
+            <div class="grid__item small--whole medium--whole large--three-twelfths footer-wrapper">
+              <div class="asphaltic red-text" style="font-size: 2.8em;">Feed your feed</div>
+              <div class="footer-social-links">
+                <a target="_blank" href="https://www.instagram.com/bulkbeefjerky/">
+                  <img src="{{ 'insta_white.jpg' | asset_url}}">
+                </a>
+                <a target="_blank" href="https://www.facebook.com/bulkjerky/">
+                  <img src="{{ 'fb_white.jpg' | asset_url}}">
+                </a>
+                <a target="_blank" href="https://twitter.com/bulkbeefjerky">
+                  <img src="{{ 'twitter_white.jpg' | asset_url}}">
+                </a>
+                <a target="_blank" href="https://www.youtube.com/channel/UC8g9KowrpUpTaAtnfobZk7Q/featured">
+                  <img src="{{ 'youtube_white.jpg' | asset_url}}">
+                </a>
+              </div>
+            </div>
+            <div class="grid__item small--whole medium--whole large--four-twelfths">
+
+              <a href="https://www.bulkbeefjerky.com" class="bulkFooterLogo">
+                <img src="{{ 'bulk_logo_lg.png' | asset_url }}">
+              </a>
+              <div style="clear:both;"></div>
+              <!--                     <div class="asphaltic red-text" style="font-size: 2.8em;">Here's what you're missing</div>                    
+<div id="evm-instagram-feed"></div><script src="https://expertvillagemedia.com/instagramfeed/embed.js" data-shop-id="bulkbeefjerky.myshopify.com"></script> -->
+            </div>
+          </div>
+        </div>
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      </div>
+
+      <div class="grid--full footer-bottom-nav-wrapper" style="border-top:2px solid #464646; color:white; padding:0 10px;">
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+        <div class="grid__item small--whole medium--whole large--ten-twelfths" style="padding-right:0">
+          <div style="float:left; margin-bottom:15px;">
+            <div>
+              <a href="/pages/beef-jerky-about-us">About Us</a>
+            </div>
+            <div>
+              <a href="/pages/customer-service">Customer Service</a>
+            </div>
+            <div>
+              <a href="https://bulkjerky.com/" target="_blank">Wholesale</a>
+            </div>
+
+            <div>
+              <a href="/pages/bulk-beef-jerky-contact-us">Contact Us</a>
+            </div>
+            <div>
+              <a href="/pages/blogs">Blog</a>
+            </div>
+            <div>
+              <a href="/pages/beef-jerky-faq">FAQ</a>
+            </div>
+            <div>
+              <a href="/pages/privacy-policy" style="color:#a9a9a9 !important;">Privacy Policy</a>
+            </div>
+            <div>
+              <a href="/pages/terms-conditions" style="color:#a9a9a9 !important;">Terms & Conditions</a>
+            </div>
+            <div >
+              <a style="color:#a9a9a9 !important;" href="https://www.bulkbeefjerky.com">
+                Copyright &copy;2018
+              </a>
+            </div>
+          </div>
+
+          <div style="float:right; padding-right:0;">
+            <div style="position: relative; top:-15px; padding-right:0;">
+              <a href="https://www.bulkbeefjerky.com">
+                <img src="{{ 'bulkArm.png' | asset_url }}">
+              </a>
+            </div>
+          </div>
+
+          <div style="clear: both;"></div>
+        </div>
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+      </div>
+    </footer>
+
+    {% for i in (1..4) %}
+    {% capture home_section %}home_section_{{ i }}{% endcapture %}
+    {% if settings[home_section] == 'slider' %}
+    {% assign slider_home_enable = true %}
+    {% endif %}
+    {% endfor %}
+
+    {% if slider_home_enable %}
+
+    <script type="text/javascript" src="{{ 'jquery.flexslider.min.js' | asset_url }}"></script>
+
+    <script type="text/javascript" src="{{ 'slider.js' | asset_url }}"></script>
+    {% endif %}
+
+    <script type="text/javascript" src="{{ 'fastclick.min.js' | asset_url }}"></script>
+
+    <script type="text/javascript" src="{{ 'timber.js' | asset_url }}"></script>
+
+    <script type="text/javascript" src="{{ 'theme.js' | asset_url }}"></script>
+
+    <script type="text/javascript" src="{{ 'owl.carousel.min.js' | asset_url }}"></script>
+
+    {% if template contains 'product' %}
+    {% if settings.product_image_zoom_type == 'lightbox' %}
+
+    <script type="text/javascript" src="{{ 'magnific-popup.min.js' | asset_url }}"></script>
+
+    {% elsif settings.product_image_zoom_type == 'zoom-in' %}
+
+    <script type="text/javascript" src="{{ 'jquery.zoom.min.js' | asset_url }}"></script>
+    {% endif %}
+    {% endif %}
+
+    {% if template contains 'article' or template contains 'product' %}
+    {% if settings.social_sharing_blog or settings.social_sharing_products %}
+
+    <script type="text/javascript" src="{{ 'social-buttons.js' | asset_url }}"></script>	
+    {% endif %}
+    {% endif %}
+
+
+
+    <!--   From macfee -->
+    <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js"></script>
+
+
+    {% include 'subscription-theme-footer' %}
+
+    <!-- Google Code for Remarketing Tag -->
+    <!--------------------------------------------------
+Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. See more information and instructions on how to setup the tag on: http://google.com/ads/remarketingsetup
+--------------------------------------------------->
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      var google_conversion_id    = 1064351945;
+      var google_custom_params    = window.google_tag_params;
+      var google_remarketing_only = true;
+      /* ]]> */
+    </script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+      <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt=""
+             src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1064351945/?guid=ON&amp;script=0"/>
+      </div>
+    </noscript>
+    <!-- Quantcast Tag -->
+    <script type="text/javascript">
+      var _qevents = _qevents || [];
+
+      (function () {
+        var elem   = document.createElement('script');
+        elem.src   = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+        elem.async = true;
+        elem.type  = "text/javascript";
+        var scpt   = document.getElementsByTagName('script')[0];
+        scpt.parentNode.insertBefore(elem, scpt);
+      })();
+
+      _qevents.push({
+        qacct: "p-GSGz1ah4aFETJ"
+      });
+    </script>
+
+    <noscript>
+      <div style="display:none;">
+        <img src="//pixel.quantserve.com/pixel/p-GSGz1ah4aFETJ.gif" border="0" height="1" width="1" alt="Quantcast"/>
+      </div>
+    </noscript>
+    <!-- End Quantcast tag -->
+
+    <!-- Klayvio -->
+    <script type="text/javascript">
+      $("input[name='contact[email]']").on('blur', function(e) {
+        console.log('KLAYVIO input[name=\'contact[email]\'] BLUR');
+        e.preventDefault();
+        var email = $(this).val();
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "https://manage.kmail-lists.com/subscriptions/external/subscribe",
+          "method": "POST",
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "cache-control": "no-cache"
+          },
+          "data": {
+            "g": "LXcwce",
+            "$fields": "$source",
+            "email": email,
+            "$source": "Shopify form"
+          }
+        };
+        $.ajax(settings).done(function (response) {
+          console.log('KLAYVIO EMAIL AJAX RESPONSE');
+          console.log(response);
+        });
+      });
+    </script>
+    <!-- END Klayvio -->
+
+
+    {% include 'booster-discounts' %}
+
+
+    <!-- BEEKETINGSCRIPT CODE START -->{% include 'bk-tracking' %}<!-- BEEKETINGSCRIPT CODE END --><input type="hidden" id="656565115116111114101" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}" data-customer-name="{{ customer.first_name }} {{ customer.last_name }}"/>{% capture zp_include_html %}{% include 'page-footer.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/page-footer.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}</body>
+</html>
+
+<script>
+  $(document).ready(function () {
+
+    /*jQuery('.btn-submit-cust').click(function(){
+          	var name = jQuery('#ContactFormName').val();
+			var email = jQuery('#ContactFormEmail').val();
+			var message = jQuery('#ContactFormMessage').val();
+
+			jQuery.ajax({
+               url: 'http://free-jerky.com/kindness',
+               type: 'POST',
+              data: {name: name, email: email, message: message},
+               success: function(html) {
+                  console.log(html);
+              },
+              error: function(xhr, textStatus, errorThrown){							
+                alert('something going wrong please try again.');
+              }
+         	});
+		});*/
+
+    //jQuery('.snize-ac-results ul').next().css('display','none');
+
+    jQuery('.nav-menu-wrapper a').each(function(){
+      var bb = jQuery(this).text();
+      if(bb == "Sales"){
+        jQuery(this).css('color','#b92c34');
+      }
+    });
+
+    $(".imgcal1").hover(function () {
+      $(".imgcal1 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getgoingr.png?18286620801705516089");
+      $(".imgcal1 h2").css("color", "#b92c34");
+    }, function () {
+      $(".imgcal1 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getgoing.png?18286620801705516089");
+      $(".imgcal1 h2").css("color", "#fff");
+    });
+
+
+    //      $(".imgcal1 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoingr.png?18286620801705516089");
+
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoing.png?18286620801705516089");
+    //       });
+
+    //     $(".imgcal1 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    $(".imgcal2").hover(function () {
+      $(".imgcal2 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getpackedr.png?18286620801705516089");
+      $(".imgcal2 h2").css("color", "#b92c34");
+    }, function () {
+      $(".imgcal2 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getpacked.png?18286620801705516089");
+      $(".imgcal2 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal2 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpackedr.png?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpacked.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal2 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    $(".imgcal3").hover(function () {
+      $(".imgcal3 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/GETWETR.PNG?18286620801705516089");
+      $(".imgcal3 h2").css("color", "#b92c34");
+    }, function () {
+      $(".imgcal3 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getwet.png?18286620801705516089");
+      $(".imgcal3 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal3 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/GETWETR.PNG?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getwet.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal3 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+
+    $(".imgcal4").hover(function () {
+      $(".imgcal4 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getdryr.png?18286620801705516089");
+      $(".imgcal4 h2").css("color", "#b92c34");
+    }, function () {
+      $(".imgcal4 img").attr("src",
+                             "https://cdn.shopify.com/s/files/1/1110/8120/files/getdry.png?18286620801705516089");
+      $(".imgcal4 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal4 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdryr.png?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdry.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal4 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    // Get URL
+    var currenthomeurl = window.location.href;
+    var homeUrl        = 'http://bulkbeefjerky.myshopify.com/';
+    if (currenthomeurl == homeUrl) {
+      jQuery(".sgoing").remove();
+    }
+
+
+    /*$('form.contact-form-home').submit( function(){
+          $('p.error, p.success').remove();
+          if($(this).find('input[type="email"]').val() !== ''){*/
+    /*var data = $(this).serialize();
+            $.ajax({  
+              type: "POST",  
+              url: "/contact",  
+              data: data,  
+              success: function() { 
+                $('.contact-form-home').append('<p class="success">Thanks for signing up! Here is your promo code: 123456</p>');
+              },
+              error: function() {
+                $('.contact-form-home').append('<p class="errror">There was an error in submitting the form.</p>');
+              }    
+            });*/
+
+    /* Build the Shopify Parameters
+            //---------------------------------------*/
+    /*var action  = '/contact?';
+                action += encodeURIComponent('form_type') +'='+ encodeURIComponent('contact');
+                action += '&'+ encodeURIComponent('utf8') +'='+ encodeURIComponent('✓');
+                action += '&'+ encodeURIComponent('contact[email]') +'='+ encodeURIComponent('preeti@suffescom.com');
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: action,
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //  Request Failed. 
+                  alert('failed');
+                },
+                success: function(response) {
+                    // Assume Success. 'response' is the complete HTML page of the 
+                    // contact success form, so likely won't be helpful
+                    //self.submit_thankyou();
+                  alert('success');
+                }
+            });*/
+
+    /*}
+          else {
+            $(this).append('<p class="error">Please fill in your email address.</p>');  
+          }
+          return false;
+        });*/
+
+  });
+</script>
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  _learnq.push(['account', 'LVswNU']);
+
+  (function () {
+    var b   = document.createElement('script');
+    b.type  = 'text/javascript';
+    b.async = true;
+    b.src   = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+    var a   = document.getElementsByTagName('script')[0];
+    a.parentNode.insertBefore(b, a);
+  })();
+</script>
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  _learnq.push(['account', 'HQkx8y']);
+
+  (function () {
+    var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+    b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+    var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+  })();
+</script>
+<script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+<script>
+  var klaviyo = klaviyo || [];
+  klaviyo.init({
+    account: 'HQkx8y',
+    platform: 'shopify'
+  });
+  klaviyo.enable('backinstock',{
+    trigger: {
+      product_page_text: 'Notify Me When Available',
+      product_page_class: 'btn',
+      product_page_text_align: 'center',
+      product_page_margin: '0px',
+      replace_sold_out: false
+    },
+    modal: {
+      headline: '{product_name}',
+      body_content: 'Register to receive a notification when this item comes back in stock.',
+      email_field_label: 'Email',
+
+      button_label: 'Notify me when available',
+      subscription_success_label: 'You\'re in! We\'ll let you know when it\'s back.',
+
+      footer_content: '',
+      close_label: 'Close',
+
+      font_family: 'Avenir, Helvetica, Arial, sans-serif;',
+
+      drop_background_color: '#000',
+      background_color: '#fff',
+      text_color: '#222',
+      button_text_color: '#fff',
+      button_background_color: '#439fdb',
+      close_button_color: '#ccc',
+      error_background_color: '#fcd6d7',
+      error_text_color: '#C72E2F',
+      success_background_color: '#d3efcd',
+      success_text_color: '#1B9500'
+    }
+  });
+</script>
+
+<!-- THIS WAS ALREADY INSTALLED, DON'T DOUBLE INSTALL APPS --!>
+<!-- BEGIN PRIVY WIDGET CODE -->
+<!-- <script type='text/javascript'> var _d_site = _d_site || '924E290489BBD3A64333CBDC'; </script>
+<script src='//widget.privy.com/assets/widget.js'></script> -->
+<!-- END PRIVY WIDGET CODE -->
+{% layout none %}

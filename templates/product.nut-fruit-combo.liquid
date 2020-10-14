@@ -1,0 +1,656 @@
+{% include 'product-content.zipifypages', contentprt: 'header' %}<!-- Included Custom-carouel.js file -->
+<script type="text/javascript" src="{{ 'carousel.js' | asset_url }}" async defer> </script>
+
+{% assign product_description_split = product.description | split: '[SECTION]' %}
+
+{% if product_description_split.size > 1 %}
+  {% assign product_bullets = product_description_split[0] %}
+  {% assign product_description = product_description_split[1] %}
+{% else %}
+  {% assign product_bullets = '' %}
+  {% assign product_description = product.description %}
+{% endif %}
+
+
+<div itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+<form action="/cart/add" data-productid="{{ product.id }}" method="post" enctype="multipart/form-data" id="AddToCartForm" class="addto">
+<!-- Begin ReCharge code -->
+{% if product.available %}{% include 'subscription-product' %}{% endif %}
+<!-- End ReCharge code -->
+
+  <div class="grid--full" style="margin: 3em auto 0; padding: 0 10px;">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    <div class="grid__item small--full medium--five-twelfths large--four-twelfths">
+
+      <div class="grid--full">
+        <div class="grid__item small--full medium--four-twelfths large--two-twelfths" >
+          <div id="ProductThumbs" >
+            {% for image in product.images %}
+            {% if forloop.index <= 5 %}
+            <a data-image-id="{{ image.id }}" href="{{ image.src | img_url: '1024x1024' }}"
+               class="product-single__thumbnail" style="">
+              <div class="" style="padding:0 5px 5px 0; ">
+                <div class="item-display-box-image product-thumbnail-gallery-item"
+                     style="margin:0; min-width:50px; min-height:50px; width:100%; background-image:url({{ image.src | img_url: 'large' }});">
+                </div>
+              </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="grid__item small--full medium--eight-twelfths large--ten-twelfths" >
+          <div class="product-single__photos" id="ProductPhoto">
+            {% assign featured_image = product.selected_or_first_available_variant.featured_image | default:product.featured_image %}
+            <img id="ProductPhotoImg" src="{{ featured_image | img_url: '1024x1024' }}" alt="{{ featured_image.alt | escape }}" data-image-id="{{ featured_image.id }}" style="display:none;">
+            <div id="mainProductImage" data-image-id="{{ featured_image.id }}" class="item-display-box-image" style="min-width:50px; min-height:50px; width:100%; background-image:url({{ featured_image | img_url: '1024x1024' }});"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="grid__item small--full medium--seven-twelfths large--four-twelfths">
+
+      <div style="padding:0 0 0 15px; color:black;">
+        <div class="product-title bulk-section-header" style="font-size:4.5em; line-height: 1em">
+          {% assign product_title_split = product.title | split: ' ' %}
+          {% for word in product_title_split %}
+          {% if forloop.last != true %}
+          <span class="black-text">{{ word }}</span>
+          {% else %}
+          <span class="red-text">{{ word }}</span>
+          {% endif %}
+          {% endfor %}
+        </div>
+		
+        <div style="border:2px solid #c3c3c3; border-top:0; width:100%; margin:15px 0 10px;"></div>
+        
+		<div class="purchase" itemprop="offers" itemscope itemtype="http://schema.org/Offer" style="padding: 0 15px;">
+          <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+          {% if product.available %}
+          <link itemprop="availability" href="http://schema.org/InStock" />
+          {% else %}
+          <link itemprop="availability" href="http://schema.org/OutOfStock" />
+          {% endif %}
+
+          <h2 class="price" id="price-preview" style="color: black; padding: 15px 0">
+            Price: <span itemprop="price" class="red-text" id="ProductPrice">{{ product.price_min | money }}</span>
+            {% if product.price_min < product.compare_at_price_min %} <del id="ComparePrice">{{ product.compare_at_price_min | money }}</del>{% endif %}
+          </h2>
+        </div>
+
+        <div style="padding: 15px 15px 0">
+          <h2>
+            {% if product.available %}
+            <span class="green-text">In Stock</span>
+            {% else %}
+            <span class="red-text">Out of Stock</span>
+            {% endif %}
+          </h2>
+        </div>
+
+        <div id="ProductBullets" style="padding: 0px 15px 0 35px; font-size:13px;">
+          <h3>
+            {% for bullet in product_bullets %}
+            <span class="bullet-list" style="color:black;">{{ bullet }}</span>
+            {% endfor %}
+          </h3>
+        </div>
+
+		
+
+        <div class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}' style="color:red !important;">{{ product.metafields.judgeme.badge }}</div>
+
+        <div style="border:2px solid #c3c3c3; border-top:0; width:100%; margin:15px 0 10px;"></div>
+
+        <div class="flex-col nut-fruits-combo" >
+	<div class="border-dotted-red">
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_1]" >        
+          <option class="selectionMade" value="">BAG 1</option>
+          <optgroup class="selectionMade" label="Fruits">
+          	<option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+      	  </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+          	<option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+      	  </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_2]" >        
+	        <option class="selectionMade" value="">BAG 2</option>
+	        <optgroup class="selectionMade" label="Fruits">
+            <option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+          </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+            <option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_3]" >        
+            <option class="selectionMade" value="">BAG 3</option>
+  					<optgroup class="selectionMade" label="Fruits">
+            <option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+          </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+            <option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_4]" >        
+          <option class="selectionMade" value="">BAG 4</option>
+          <optgroup class="selectionMade" label="Fruits">
+            <option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+          </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+            <option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_5]" >        
+          <option class="selectionMade" value="">BAG 5</option>
+          <optgroup class="selectionMade" label="Fruits">
+            <option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+          </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+            <option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="flavorWrapper clearfix">
+      <div class="left select-wrapper" >
+        <select required class="left required cut-select" id="cut" name="properties[bag_6]" >        
+          <option class="selectionMade" value="">BAG 6</option>
+          <optgroup class="selectionMade" label="Fruits">
+            <option value="Pineapple Rings">B.U.L.K Pineapple Rings</option>
+            <option value="Cherries">B.U.L.K Cherries</option>
+            <option value="Diced Papaya">B.U.L.K Diced Papaya</option>
+            <option value="Sliced Mango">B.U.L.K Sliced Mango</option>
+            <option value="Apple Rings">B.U.L.K Apple Rings</option>
+            <option value="Banana Chips">B.U.L.K Banana Chips</option>
+            <option value="Dried Peaches">B.U.L.K Dried Peaches</option>
+            <option value="Blueberries">B.U.L.K Blueberries</option>
+            <option value="Apricots">B.U.L.K Apricots</option>
+            <option value="Prunes">B.U.L.K Prunes</option>
+            <option value="Dried Pears">B.U.L.K Dried Pears</option>
+            <option value="Sliced Ginger">B.U.L.K Sliced Ginger</option>
+            <!--<option value="Fruit Sampler">B.U.L.K Fruit Sampler</option>-->
+            <option value="Cranberries">B.U.L.K Cranberries</option>
+            <option value="Coconut Flakes">B.U.L.K Coconut Flakes</option>
+            <option value="Pitted Figs">B.U.L.K Pitted Figs</option>
+            <option value="Dates">B.U.L.K Dates</option>
+            <option value="Raisins">B.U.L.K Raisins</option>
+          </optgroup>
+          <optgroup class="selectionMade" label="Nuts">
+            <option value="Cashews">B.U.L.K Cashews</option>
+            <option value="Pistachios">B.U.L.K Pistachios</option>
+            <option value="Almonds">B.U.L.K Almonds</option>
+            <option value="Walnuts">B.U.L.K Walnuts</option>
+            <!--<option value="Nut Sampler Bag">B.U.L.K Nut Sampler Bag</option>-->
+            <option value="Peanuts">B.U.L.K Peanuts</option>
+            <option value="Pecans">B.U.L.K Pecans</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="grid__item small--full medium--full large--two-twelfths">
+      <div>
+        <div class="product_social_section">
+          <div class="red-text" style="font-size: 1.2em; line-height:1em; font-weight: bold; width:50%; min-width:120px;float:left;">Share to Win!</div>
+
+          <div class="share-button-wrapper" style="width:50%; min-width:120px; float:left;">
+            <a href="mailto:">
+                <img src="{{ 'share_mail.png' | asset_img_url }}">
+            </a>
+
+              <a target="_blank"
+                 href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fbulkjerky%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">
+                  <img src="{{ 'share_fb.png' | asset_img_url }}">
+              </a>
+
+              <a href="https://twitter.com/intent/tweet?screen_name=bulkbeefjerky&ref_src=twsrc%5Etfw" class="" data-show-count="false"><img src="{{ 'share_twitter.png' | asset_img_url }}"></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+              <a target="_blank" href="https://www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" data-pin-custom="true" style="cursor: pointer">
+                <img src="{{ 'share_pintrest.png' | asset_img_url }}">
+              </a>
+
+              <div style="clear: both;"></div>
+          </div>
+        <div style="clear: both;"></div>
+        </div>
+
+        <div>
+        <div class="" style="border: 2px solid #c3c3c3; padding:15px 15px 15px; ">
+
+          {% assign hide_default_title = false %}
+          {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+          {% assign hide_default_title = true %}
+          {% endif %}
+
+          
+
+            <div class="product-options">
+
+              <div class=" select clearfix"{% if hide_default_title %} style="display:none"{% endif %}>
+
+                <select name="id" data-productid="{{ product.id }}" id="productSelect" class="product-single__variants">
+                  {% for variant in product.variants %}
+                  {% if variant.available %}
+
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" data-price="{{ variant.price | money_without_currency | remove: ',' }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+
+                  {% else %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                  </option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+
+              </div>
+
+              <div class="select clearfix">
+                <label for="product-select" style="text-transform: uppercase; float:left; font-size: 1.2em; font-weight:bold; text-align: right; padding-right: 5px;">QTY:</label>
+                <select id="quantity" name="quantity" class="left" style="">
+                  {% for i in (1..20) %}
+                  <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              {% if product.available %}
+              <button type="submit" name="add" id="AddToCart" class="btn addtocart">
+                <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+              </button>
+              {% else %}
+              <button type="btn" name="add" id="AddToCart" class="btn addtocart" disabled>
+                <span id="AddToCartText">Sold Out</span>
+              </button>
+
+
+              {% endif %}
+
+
+
+            </div>
+
+          
+        </div>
+        <div class="free-shipping-image" style="text-align: center; ">
+        <img src="{{ 'FreeShipping_Button.jpg' | asset_url }}" style="margin:15px auto 0">
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+  </div>
+</form>
+
+  <div class="grid--full" style="padding:0 10px;">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    <div id="descriptionContainer" class="grid__item small--full medium--full large--eight-twelfths" style="border-bottom:2px solid #c3c3c3; ">
+      <div id="description" class="description" itemprop="description" style="color:black !important; padding-right:30px;">
+        <div class="asphaltic" style="font-size:3em; border-bottom:0px solid rgb(195, 195, 195); padding-bottom:8px;">Product Description</div>
+        {{ product_description }}
+      </div>
+
+    </div>
+    <div id="" class="grid__item small--full medium--full large--two-twelfths" style="display:none;border-bottom:2px solid #c3c3c3; ">
+
+      <div id="promoSquare" style="width:100%; min-height:250px; background: #c3c3c3; color:white; font-size:2em; padding:16px 30px; text-align: center;">
+        Free shipping on orders over <span class="red-text">$100</span>
+      </div>
+    </div>
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+  </div>
+
+  <div class="grid--full" style="padding:0 10px;">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    <div class="grid__item small--full medium--full large--eight-twelfths" style="border:0px solid #c3c3c3; border-top:0;">
+
+      <div style="margin: 20px 0 50px;">
+        <!--<span class="red-text" style="font-weight: bold; font-size: 1.2em;">Have a question?</span>
+
+        <div style="position: relative;">
+          <form action="/search" method="get" class="header-bar__search-form clearfix" role="search">
+            <input type="search" name="q" value="" aria-label="Search" class="header-bar__search-input"
+                   style="max-width:100%; width: 95% !important; border:1px solid #c3c3c3; background: white; color: black;"
+                   placeholder="">
+            <button type="submit" class="btn icon-fallback-text header-bar__search-submit"
+                    style="color:grey; background: transparent; position: absolute !important; right:24px !important;">
+              <i class="fa fa-search"></i>
+              <span class="fallback-text"></span>
+            </button>
+          </form>
+        </div>-->
+        
+        {% include 'questions-answers' %}
+        
+      </div>
+
+    </div>
+    <div class="grid__item small--full medium--full large--two-twelfths" style="border:0px solid #c3c3c3; border-top:0;">
+
+    </div>
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+  </div>
+
+
+    <div class="grid--full" style="background-color: #f1f1f1; padding:15px 10px 30px;">
+        <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+        <div class="grid__item small--full medium--full large--eight-twelfths product_star_ratting_section">
+            <div class="custom_description_main">
+                <div class="custom_description_inner">
+                    <div class="description_left">
+                    </div>
+                    <div class="review_right">
+                        <div class='span12'>
+                            <div id='judgeme_product_reviews' data-product-title='{{product.title}}' data-id='{{product.id}}'>{{ shop.metafields.judgeme.settings }}{{ product.metafields.judgeme.widget }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid__item small--zero medium--zero large--one-twelfth" style="background: #f1f1f1;"></div>
+    </div>
+
+
+  <div class="grid--full">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+    <div class="grid__item small--full medium--full large--ten-twelfths">
+
+      {% include 'similar-products' %}
+
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+  </div>
+
+</div>
+
+<div>
+  <input type="hidden" class="totalprod" value="{{ collection.products.size }} ">
+</div>
+
+  {% include 'email-signup-banner' %}
+
+
+
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+
+<script>
+  jQuery(function($) {
+    jQuery('#judgeme_product_reviews #judgeme_header h2').html('Recent <span>Reviews</span>');
+    new Shopify.OptionSelectors('productSelect', {
+      product: {{ product | json }},
+      onVariantSelected: selectCallback,
+      enableHistoryState: true
+    });
+
+    // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+    {% if product.options.size == 1 and product.options.first != 'Title' %}
+    $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}:</label>');
+                                         {% endif %}
+
+                                         // Hide selectors if we only have 1 variant and its title contains 'Default'.
+                                         {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+                                         $('.selector-wrapper').hide();
+    {% endif %}
+  });
+
+  jQuery(document).ready(function(){
+    var qty=$('#Quantity').val();
+    jQuery('.incre').click(function(){
+      qty++;
+      jQuery('#Quantity').val(qty);
+      //Quantity increment
+    });
+
+    jQuery('.decre').click(function(){
+      if(qty>1){
+        qty--;
+        jQuery('#Quantity').val(qty);
+        //Quantity decrement
+      }
+    });
+
+    //Getting Description
+    var desc= jQuery('.product-description').html();
+    jQuery('.description_left').html(desc);
+    jQuery('.description_left .nutri_main').remove();
+    jQuery('.product-description').contents(':not(.nutri_main)').remove();
+  });
+
+
+  jQuery(document).ready(function(){
+    var qty=$('#Quantity').val();
+    jQuery('.incre').click(function(){
+      qty++;
+      jQuery('#Quantity').val(qty);
+      //Quantity increment
+    });
+
+    jQuery('.decre').click(function(){
+      if(qty>0){
+        qty--;
+        jQuery('#Quantity').val(qty);
+        //Quantity decrement
+      }
+    });
+
+    // Get URL
+    var currenturl= window.location.href;
+    var beefUrl= 'http://bulk-test-store.myshopify.com/collections/beef-jerky';
+    if(currenturl != beefUrl){
+      jQuery( ".grid-link__title" ).remove();
+    }
+    //Getting Description
+    var desc= jQuery('.product-description').html();
+    jQuery('.description_left').html(desc);
+    jQuery('.description_left .nutri_main').remove();
+    jQuery('.product-description').contents(':not(.nutri_main)').remove();
+  });
+
+</script>
+
+
+<script>
+  $(document).on('click', '.product-single__thumbnail', function(){
+    var imageURL = $(this).prop('href');
+    $('#mainProductImage').css('background-image', 'url("'+imageURL+'")');
+  });
+
+  $("#mainProductImage").each( function(){
+    $(this).css('height', $(this).width());
+  });
+  $(".product-thumbnail-gallery-item").each( function(){
+    $(this).css('height', $(this).width());
+  });
+
+  var selectCallback = function(variant, selector) {
+    timber.productPage({
+      money_format: "{{ shop.money_format }}",
+      variant: variant,
+      selector: selector,
+      translations: {
+      add_to_cart : "{{ 'products.product.add_to_cart' | t }}",
+      sold_out : "{{ 'products.product.sold_out' | t }}",
+      unavailable : "{{ 'products.product.unavailable' | t }}"
+    }
+                       });
+  };
+
+  $(document).ready( function(){
+    jQuery('#judgeme_product_reviews #judgeme_header h2').html('Recent <span>Reviews</span>');
+      $("#promoSquare").css("min-height",$("#description").height());
+  });
+</script>
+<script text="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+{% include 'product-content.zipifypages', contentprt: 'footer' %}

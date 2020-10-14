@@ -1,0 +1,670 @@
+{% assign zp_use_favicon = false %}{% assign zp_use_meta_tags = false %}{% assign zp_use_open_graph_tags = false %}{% if template contains 'article' and blog.metafields.blogfeeder.use_canonical == 'yes' %}{% assign canonical_url = article.metafields.blogfeeder.canonical %}{% endif %}
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+
+  <!-- Basic page needs ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if settings.favicon_enable %}
+  <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+  {% endif %}
+
+  <!-- Title and description ================================================== -->
+  <title>
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Social meta ================================================== -->
+  {% include 'social-meta-tags' %}
+
+  <!-- Helpers ================================================== -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+
+  <!-- CSS ================================================== -->
+
+  {{ 'bou-western.css' | asset_url | stylesheet_tag }}
+  {{ 'style.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'timber.scss.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+
+  <!--  custom css  -->
+  {{ '1140.css' | asset_url | stylesheet_tag }}
+  {{ 'Responsive.css' | asset_url | stylesheet_tag }}
+  {{ 'recharge.css' | asset_url | stylesheet_tag }}
+
+  {% include 'google-fonts' %}
+
+  <link href="https://fonts.googleapis.com/css?family=Maiden+Orange|Rye" rel="stylesheet">
+
+  <!-- Header hook for plugins ================================================== -->
+  {% comment %}{{ content_for_header }}{% endcomment %}{% capture zp_include_html %}{% include 'header-scripts.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/header-scripts.zipifypages.liquid' or zp_include_html contains 'Liquid error: Could not find asset snippets/page-content-parser.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}
+
+  {% include 'oldIE-js' %}
+
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+  {{ 'modernizr.min.js' | asset_url | script_tag }}
+
+  {% comment %}
+  If you store has customer accounts disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+
+  <script type="text/javascript" async src="https://judge.me/shopify.js"></script>
+
+  <style>
+    .product_rp_div, .frequency_num, .frequency_type {
+      color:black;
+    }
+    .product_rp_cart_div{
+      display: inline-block;
+    }
+    .frequency_label{
+      display: -webkit-inline-box;
+    }
+
+  </style>
+
+</head>
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  _learnq.push(['account', 'LVswNU']);
+
+  (function () {
+  var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+  b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+  var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+  })();
+</script>
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
+
+  <!-- Bold: Memberships -->
+  {% if customer %}
+  <div class="bold_customer_id" hidden>{{ customer.id }}</div>
+  {% endif %}
+  <!-- end Bold code -->
+
+  {% include 'header-bar' %}
+
+  <header class="site-header " role="banner">
+    <div class="container12" id="wrap-header">
+
+      {% if settings.nav_below_logo %}
+
+      <div class="logo-home">
+
+        {% if template == 'index' %}
+        <h1 class="site-header__logo{% if settings.left_aligned_logo %} large--left{% endif %}" itemscope itemtype="http://schema.org/Organization">
+          {% else %}
+          <div class="h1 site-header__logo{% if settings.left_aligned_logo %} large--left{% endif %}" itemscope itemtype="http://schema.org/Organization">
+            {% endif %}
+            {% if settings.logo_use_image %}
+            <a href="/" class="logo-wrapper" itemprop="url">
+              <img src="https://cdn.shopify.com/s/files/1/1110/8120/files/beef-logo.png?11039630821922550232" alt="{{ shop.name }}" itemprop="logo">
+            </a>
+            {% else %}
+            <a href="/" itemprop="url">{{ shop.name }}</a>
+            {% endif %}
+            {% if template == 'index' %}
+            </h1>
+          {% else %}
+          </div>
+        {% endif %}
+        {% if settings.header_message != blank %}
+        <p class="header-message large--hide">
+          <small>{{ settings.header_message }}</small>
+        </p>
+        {% endif %}
+      </div>
+
+
+
+      <div class="small--hide medium--hide">
+        <div class="my-cart">
+          <a href="/cart" class="cart-page-link " id="my_cart">
+            <span class="white">MY</span><span class="red"> B.U.L.K</span> <span class="white">CART</span> > <span class="cart-circle cart-count">{{ cart.item_count }}</span>
+          </a>
+        </div>
+        <div class="my-search-bar ">
+          <form action="/search" method="get" class="header-bar__search-form clearfix" role="search">
+
+            <input type="search" name="q" value="" aria-label="Search" class="header-bar__search-input" placeholder="Search">
+            <button type="submit" class="btn icon-fallback-text header-bar__search-submit">
+              <span class="icon icon-search" aria-hidden="true"></span>
+              <span class="fallback-text"></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    {% else %}
+
+    <div class="grid--full large--display-table">
+      <div class="grid__item large--one-third large--display-table-cell">
+        {% if template == 'index' %}
+        <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
+          {% else %}
+          <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
+            {% endif %}
+            {% if settings.logo_use_image %}
+            <a href="/" class="logo-wrapper" itemprop="url">
+              <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
+            </a>
+            {% else %}
+            <a href="/" itemprop="url">{{ shop.name }}</a>
+            {% endif %}
+            {% if template == 'index' %}
+            </h1>
+          {% else %}
+          </div>
+        {% endif %}
+        {% if settings.header_message != blank %}
+        <p class="header-message large--hide">
+          <small>{{ settings.header_message }}</small>
+        </p>
+        {% endif %}
+      </div>
+      <div class="grid__item large--two-thirds large--display-table-cell medium-down--hide">
+        {% include 'site-nav' %}
+      </div>
+    </div>
+
+    {% endif %}
+
+
+    <div class="grid--full medium-down--hide">
+      <div class="grid__item">
+        {% include 'site-nav' %}
+      </div>
+    </div>
+  </header>
+
+  <main class="wrapper main-content"  role="main">
+
+    {% comment %}{{ content_for_layout }}{% endcomment %}{% capture zp_include_html %}{% include 'blog-content.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/blog-content.zipifypages.liquid' %}{{ zp_include_html | strip }}{% endunless %}{% assign zp_include_html =  %}
+
+  </main>
+
+  <footer class="site-footer small--text-center" role="contentinfo">
+    <div class="wrapper">
+
+      <div class="grid-uniform">
+        <div class="sgoing">
+          <ul class="going">
+            <li>
+              <!--     <a href="/pages/get-going"> -->
+              <div class="imgcal1">
+                <div class="text-get">
+                  <h2 class="cwid">GET <br>GOING > </h2>
+                </div>
+                <div class="imgcall ">
+                  <img alt="Get Going" src="{{ '5.png' | asset_url }}" width:100% />
+                </div>
+              </div>
+              <!--     </a> -->
+            </li>
+
+            <li>
+              <!--     <a href="/pages/get-packed"> -->
+              <div class="imgcal2">
+                <div class="text-get">
+                  <h2 class="cwid">GET<br> PACKED > </h2>
+                </div>
+                <div class="imgcall ">
+                  <img alt="Get Packed" src="{{ '8.png' | asset_url }}" width:100% />
+                </div>
+              </div>
+              <!--     </a> -->
+            </li>
+
+            <li>
+              <!--     <a href="/pages/get-wet"> -->
+              <div class="imgcal3">
+                <div class="text-get">
+                  <h2 class="cwid">GET<br> WET > </h2>
+                </div>
+                <div class="imgcall ">
+                  <img src="https://cdn.shopify.com/s/files/1/1110/8120/files/getwet.png?18286620801705516089" alt="GET WET" width:100% />
+                </div>
+              </div>
+              <!--     </a> -->
+            </li>
+
+            <li>
+              <!--     <a href="/pages/get-dry"> -->
+              <div class="imgcal4">
+                <div class="text-get">
+                  <h2 class="cwid">  GET <br>DRY ></h2>
+                </div>
+
+                <div class="imgcall ">
+                  <img src="{{ '6.png' | asset_url }}" alt="Get Dry" width:100% />
+                </div>
+              </div>
+
+              <!--     </a> -->
+            </li>
+          </ul>
+        </div> 
+        <div class="clear"></div>
+      </div>
+    </div>
+
+
+    <div class="bg-img-divide"></div>
+
+    <div class="wrapper">
+
+      <div class="grid-uniform">
+        {% if settings.footer_newsletter_enable %}
+        <div class="section-header section-header--medium">
+
+          <div class="section-header__title news-header">
+            <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>  
+            <p>Signup for the latest News and Offers </p>
+          </div>
+
+        </div>
+        <div class="news-form">
+          {% include 'newsletter-form' %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-img-divide"></div>
+    <div class="two-img-sat-free">
+      <div class="container12">
+        <div class="common-img Satisfacation">
+          <img src="{{ '1.png' | asset_url }}" alt="Satisfacation Guarantee"/>
+        </div>
+
+        <div class="common-img free-shipping">
+          <img src="{{ 'free-ship.png' | asset_url }}" alt="Free Shipping"/>
+        </div>
+      </div>
+    </div>    
+
+
+    <div class="wrapper">
+
+      <div class="grid-uniform"> 
+
+        {% comment %}
+        Calculate the number of footer columns shown
+        {% endcomment %}
+        {% assign num_footer_columns = 0 %}
+        {% if settings.footer_blog_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+        {% if settings.footer_quicklinks_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+        {% if settings.footer_second_menu_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+        {% if settings.footer_social_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+        {% if settings.footer_contact_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+        {% if settings.footer_newsletter_enable %}
+        {% assign num_footer_columns = num_footer_columns | plus: 1 %}
+        {% endif %}
+
+        {% case num_footer_columns %}
+        {% when 0 %}
+        {% when 1 %}
+        {% assign footer_column_width = 'text-center' %}
+        {% when 2 %}
+        {% assign footer_column_width = 'large--one-half medium--one-half' %}
+        {% when 3 %}
+        {% assign footer_column_width = 'large--one-third medium--one-third' %}
+        {% when 4 %}
+        {% assign footer_column_width = 'large--one-quarter medium--one-half' %}
+        {% when 5 %}
+        {% assign footer_column_width = 'large--one-fifth medium--one-half' %}
+        {% when 6 %}
+        {% assign footer_column_width = 'large--one-sixth medium--one-half' %}
+        {% endcase %}
+
+
+
+        <div  class="grid__item text-center site-footer__links article">
+          {% if settings.footer_quicklinks_enable %}
+          {% comment %}
+          {% unless num_footer_columns == 1 %}
+          <h4>{{ 'layout.footer.linklist_title' | t }}</h4>
+          {% endunless %}
+          {% endcomment %}  
+          <ul class="site-footer__links footer-menu-1 inline-list">
+            {% for link in linklists[settings.footer_quicklinks_linklist].links %}
+            {% if forloop.first == true %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% else %}
+            <li>|</li> <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+
+
+
+        {% comment %}
+        {% if settings.footer_blog_enable %}
+        <div class="grid__item {{ footer_column_width }} site-footer__links article">
+          <h4><a href="/blogs/{{ settings.footer_blog }}">{{ 'layout.footer.blog_title' | t }}</a></h4>
+          {% assign article = blogs[settings.footer_blog].articles.first %}
+          <p class="h5">{{ article.title | link_to: article.url }}</p>
+          {% if article.image %}
+          {% assign image_alt = article.title | escape %}
+          <p>{{ article | img_url: 'large' | img_tag: image_alt, 'article__image' | link_to: article.url }}</p>
+          {% endif %}
+          {% if article.excerpt.size > 0 %}
+          <div class="clearfix">
+            {{ article.excerpt }}
+          </div>
+          {% else %}
+          <p>{{ article.content | strip_html | truncatewords: 30 }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if settings.footer_quicklinks_enable %}
+        <div class="grid__item {{ footer_column_width }}">
+          {% unless num_footer_columns == 1 %}
+          <h4>{{ 'layout.footer.linklist_title' | t }}</h4>
+          {% endunless %}
+          <ul class="site-footer__links{% if num_footer_columns == 1 %} inline-list{% endif %}">
+            {% for link in linklists[settings.footer_quicklinks_linklist].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if settings.footer_second_menu_enable %}
+        <div class="grid__item {{ footer_column_width }}">
+          <h4>{{ linklists[settings.footer_second_menu].title }}</h4>
+          <ul class="site-footer__links">
+            {% for link in linklists[settings.footer_second_menu].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if settings.footer_social_enable %}
+        <div class="grid__item {{ footer_column_width }}">
+          <h4>{{ 'layout.footer.social_title' | t }}</h4>
+          {% comment %}
+          Loop through the social network links
+          {% endcomment %}
+          {% include 'social-links' %}
+        </div>
+        {% endif %}
+
+        {% if settings.footer_contact_enable %}
+        <div class="grid__item {{ footer_column_width }}">
+          <h4>{{ 'layout.footer.contact_title' | t }}</h4>
+          <div class="rte">{{ settings.footer_contact_text }}</div>
+        </div>
+        {% endif %}
+
+        {% if settings.footer_newsletter_enable %}
+        <div class="grid__item {{ footer_column_width }}">
+          <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
+          <p>{{ 'layout.footer.newsletter_caption' | t }}</p>
+          {% include 'newsletter-form' %}
+        </div>
+        {% endif %}
+        {% endcomment %}
+      </div>
+
+      <hr class="hr--small hr--clear">
+      {% comment %}
+      {% if settings.footer_show_methods_of_payment %}
+      {% unless shop.enabled_payment_types == empty %}
+      <div class="grid">
+        <div class="grid__item text-center">
+          <ul class="inline-list payment-icons">
+            {% for type in shop.enabled_payment_types %}
+            <li>
+              <img src="{{ type | payment_type_img_url }}" alt="">
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endunless %}
+      {% endif %}
+
+      <div class="grid">
+        <div class="grid__item text-center">
+          <p class="site-footer__links">{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}</p>
+        </div>
+      </div>
+      {% endcomment %}
+    </div>
+    <div class="grid__item text-center site-footer__links article-footer" >
+      <img src="{{ '7.png' | asset_url }}" alt="proudly USA made"/>
+    </div>
+    <div class="grid__item text-center site-footer__links article-footer-two">
+
+      {% if settings.footer_second_menu_enable %}
+      {% comment %}
+      <h4>{{ linklists[settings.footer_second_menu].title }}</h4>
+      {% endcomment %}    
+      <ul class="site-footer__links footer-menu-2 inline-list">
+        {% for link in linklists[settings.footer_second_menu].links %}
+        {% if forloop.first == true %}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% else %}
+        <li> &#8226; </li><li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </footer>
+
+  {% for i in (1..4) %}
+  {% capture home_section %}home_section_{{ i }}{% endcapture %}
+  {% if settings[home_section] == 'slider' %}
+  {% assign slider_home_enable = true %}
+  {% endif %}
+  {% endfor %}
+
+  {% if slider_home_enable %}
+  {{ 'jquery.flexslider.min.js' | asset_url | script_tag }}
+  {{ 'slider.js' | asset_url | script_tag }}
+  {% endif %}
+
+  {{ 'fastclick.min.js' | asset_url | script_tag }}
+  {{ 'timber.js' | asset_url | script_tag }}
+  {{ 'theme.js' | asset_url | script_tag }}
+  {{ 'owl.carousel.min.js' | asset_url | script_tag }}
+
+  {% if template contains 'product' %}
+  {% if settings.product_image_zoom_type == 'lightbox'  %}
+  {{ 'magnific-popup.min.js' | asset_url | script_tag }}
+  {% elsif settings.product_image_zoom_type == 'zoom-in' %}
+  {{ 'jquery.zoom.min.js' | asset_url | script_tag }}
+  {% endif %}
+  {% endif %}
+
+  {% if template contains 'article' or template contains 'product' %}
+  {% if settings.social_sharing_blog or settings.social_sharing_products %}
+  {{ 'social-buttons.js' | asset_url | script_tag }}
+  {% endif %}
+  {% endif %}
+
+  {% include 'judgeme_html_miracle' %}
+  <!-- BEEKETINGSCRIPT CODE START -->{% include 'bk-tracking' %}<!-- BEEKETINGSCRIPT CODE END -->
+
+  <!--   From macfee -->
+  <script type="text/javascript" src="https://cdn.ywxi.net/js/1.js" async></script>
+
+
+  {% include 'subscription-theme-footer' %}
+  <script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  _learnq.push(['account', 'LVswNU']);
+
+  (function () {
+  var b = document.createElement('script'); b.type = 'text/javascript'; b.async = true;
+  b.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'a.klaviyo.com/media/js/analytics/analytics.js';
+  var a = document.getElementsByTagName('script')[0]; a.parentNode.insertBefore(b, a);
+  })();
+</script>
+  <!-- Google Code for Remarketing Tag -->
+<!--------------------------------------------------
+Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. See more information and instructions on how to setup the tag on: http://google.com/ads/remarketingsetup
+--------------------------------------------------->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1064351945;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1064351945/?guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+  
+{% capture zp_include_html %}{% include 'page-footer.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/page-footer.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}</body>
+</html>
+
+<script>
+  $(document).ready(function(){
+    $(".imgcal1").hover(function(){
+      $(".imgcal1 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoingr.png?18286620801705516089");
+      $(".imgcal1 h2").css("color", "#b92c34");  
+    }, function(){
+      $(".imgcal1 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoing.png?18286620801705516089");
+      $(".imgcal1 h2").css("color", "#fff");
+    });
+
+
+
+
+    //      $(".imgcal1 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoingr.png?18286620801705516089");
+
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getgoing.png?18286620801705516089");
+    //       });
+
+    //     $(".imgcal1 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    $(".imgcal2").hover(function(){
+      $(".imgcal2 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpackedr.png?18286620801705516089");
+      $(".imgcal2 h2").css("color", "#b92c34");  
+    }, function(){
+      $(".imgcal2 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpacked.png?18286620801705516089");
+      $(".imgcal2 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal2 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpackedr.png?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getpacked.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal2 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    $(".imgcal3").hover(function(){
+      $(".imgcal3 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/GETWETR.PNG?18286620801705516089");
+      $(".imgcal3 h2").css("color", "#b92c34");  
+    }, function(){
+      $(".imgcal3 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getwet.png?18286620801705516089");
+      $(".imgcal3 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal3 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/GETWETR.PNG?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getwet.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal3 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+
+    $(".imgcal4").hover(function(){
+      $(".imgcal4 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdryr.png?18286620801705516089");
+      $(".imgcal4 h2").css("color", "#b92c34");  
+    }, function(){
+      $(".imgcal4 img").attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdry.png?18286620801705516089");
+      $(".imgcal4 h2").css("color", "#fff");
+    });
+
+
+    //     $(".imgcal4 img").mouseenter(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdryr.png?18286620801705516089");
+    //     }).mouseleave(function(){
+    //       $(this).attr("src","https://cdn.shopify.com/s/files/1/1110/8120/files/getdry.png?18286620801705516089");
+    //       });
+
+    //      $(".imgcal4 .cwid").mouseenter(function(){
+    //       $(this).css("color", "#b92c34");
+
+    //     }).mouseleave(function(){
+    //       $(this).css("color", "#fff");
+    //       });
+
+    // Get URL
+    var currenthomeurl= window.location.href;
+    var homeUrl= 'http://bulkbeefjerky.myshopify.com/';
+    if(currenthomeurl == homeUrl){
+      jQuery( ".sgoing" ).remove();
+    }
+
+
+  });
+</script>
+{% layout none %}

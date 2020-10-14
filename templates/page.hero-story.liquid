@@ -1,0 +1,95 @@
+<div class="" style="width:100%; margin:0 auto; background:white;">
+    <div style="position:relative; background:black; background-image:url('{{ 'hero_story_1.jpg' | asset_url }}'); background-repeat: no-repeat; background-position: center; background-size: cover">
+
+        <div class="grid--full">
+            <div class="grid__item small--one-whole medium--one-whole large--one-half" style="text-align: center;">
+                <div style="max-width:800px;color:white;margin: 0 auto; padding: 80px 20px;">
+                    <div class="asphaltic" style="font-size: 6em; margin-bottom:40px; color:white; text-align: left;">EVERYDAY<br>HEROES<br>EXIST.</div>
+                </div>
+            </div>
+            <div class="grid__item small--zero medium--zero large--one-half">
+            </div>
+        </div>
+
+
+        <img src="{{ 'bulk_logo.png' | asset_url }}" class="small--hide medium--hide" style="position: absolute; right:80px; top:80px;">
+
+    </div>
+</div>
+
+<div class="grid--full">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+    <form action="/contact#contact_form" method="post">
+        <input type="hidden" name="form_type" value="contact">
+        <input type="hidden" name="utf8" value="✓">
+
+        <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+            <div class="bulk-section-header-wrapper">
+                <h1 class="bulk-section-header">
+                    Tell us your hero story
+                </h1>
+                <div class="bulk-section-header-line"></div>
+            </div>
+
+            <div class="grid--full">
+                <div class="grid__item small--one-whole medium--one-whole large--one-half">
+                    <div class="input-padding">
+                        <input name="contact[name]" class="" style="" type="text" placeholder="Your name">
+                    </div>
+                </div>
+                <div class="grid__item small--one-whole medium--one-whole large--one-half">
+                    <div class="input-padding">
+                        <input name="contact[email]" class="" type="text" placeholder="Your email address">
+                    </div>
+                </div>
+                <div class="grid__item small--one-whole medium--one-whole large--one-whole">
+                    <div class="input-padding">
+                        <textarea name="contact[body]" class="" style="min-height: 300px;"
+                                  placeholder="Tell us about your everyday hero"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bulk-section-header-wrapper">
+
+                <div style="background: white; display: inline-block; position: relative; z-index: 100;">
+                    <button type="submit" class="hero-story-submit-button" style="">
+                    <span class="bulk-section-header" style="background:transparent; font-size:3em;">
+                        Submit
+                    </span>
+                    </button>
+                </div>
+
+                <div class="bulk-section-header-line" style="top:-50px;"></div>
+            </div>
+        </div>
+    </form>
+
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+</div>
+
+<div style="margin: 300px auto 0;"></div>
+
+<div class="grid--full">
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+
+
+    <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+        <div class="bulk-section-header-wrapper">
+            <div class="bulk-section-header">
+                Tag Us On Insta<span class="red-text">Twit</span>Snap<span class="red-text">Face</span>
+            </div>
+            <div class="bulk-section-header-line"></div>
+        </div>
+        <div style="text-align: center; width:100%; position: relative; top:-20px; font-size: 1.2em;">Take a picture
+            with B.U.L.K and tag us (<span class="red-text">@Bulkbeefjerky</span>) on social media and let us know what kindness mean to you!
+        </div>
+        <div class="grid--full">
+            <div id="insta-feed"></div>
+        </div>
+    </div>
+
+
+    <div class="grid__item small--zero medium--zero large--one-twelfth"></div>
+</div>

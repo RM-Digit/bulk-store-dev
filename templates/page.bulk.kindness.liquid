@@ -1,0 +1,80 @@
+<!--<div class="container12" style="margin:60px auto;">-->
+  <div class="wrapper" style="background-image: url('{{ 'kindness_bg_preview.jpeg' | asset_url }}');max-width: 100%;background-repeat: no-repeat;background-size: cover;">
+    <header class="section-header">
+      <!--<h1 class="page-title asphaltic" style="font-size:3em;">{{ page.title }}</h1>-->
+    </header>
+
+    {% comment %}
+      	
+    {% endcomment %}
+    <div class="rte page-content custom_contaner_wrap" style="background: transparent; color:#fff;">
+      
+      <div class="logo-image" style="text-align: center;">
+        <img class="kindness-icon" src="{{ 'bulkArm.png' | asset_url }}">
+      </div>
+      <div class="kindness-title">
+        <h1 style="text-align: center;font-size: 44px;">what does <span style="color: #af2a26;">Kindness</span> mean to you?</h1>
+      </div>
+      
+      <div class="form-section">
+	
+        <iframe src="https://free-jerky.com/kindness/kindness.php" frameborder="0" style="width:100%;overflow:hidden;" height="100%" width="100%" id="check-customer" check-email="{% if customer %}{{ customer.email }}|{{ customer.first_name }}{% endif %}"></iframe>
+
+          <!--{% form 'contact' %}
+
+            {% if form.posted_successfully? %}
+              <p class="note form-success">
+                {{ 'contact.form.post_success' | t }}
+              </p>
+            {% endif %}
+			
+            {{ form.errors | default_errors }}
+			<div class="forms_filds">
+              
+              {% assign name_attr = 'contact.form.name' | t | handle %}
+              	<input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="Your name *" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+              	<input type="email" id="ContactFormEmail" name="contact[email]" placeholder="Your email *" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+              	<textarea id="ContactFormMessage" name="contact[body]" placeholder="Type your answer here  *">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        		<span class="input_border_style"><img src="{{ 'line-icon.png' | asset_url }}"></span>
+        	</div>
+            <button type="button" class="btn btn-default btn-submit-cust">SUBMIT YOUR ANSWER</button>
+
+          {% endform %}-->
+       
+        
+      </div>
+      
+      <!--{{ page.content }}-->
+
+      <!--<div class="custom_pagination">
+        <ul>
+          <li class="active">
+            <a href="#">1</a>
+          </li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">6</a></li>
+          <li><a href="#">7</a></li>
+          <li><a href="#">8</a></li>
+          <li><a href="#">9</a></li>
+          <li><a href="#">10</a></li>
+        </ul>
+      </div>-->
+    </div>
+  </div>
+<!--</div>-->
+
+
+<script type="text/javascript">
+  jQuery(document).ready(function () {
+	var checkSession = jQuery('#check-customer').attr('check-email');
+    if(checkSession != ''){
+		var ssrc = jQuery('#check-customer').attr('src');
+        jQuery('#check-customer').attr('src',ssrc+'?checkSession='+checkSession);
+    }
+  });
+</script>

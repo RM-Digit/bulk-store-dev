@@ -1,0 +1,18 @@
+<div class="form-horizontal">
+  <select name="SortBy" id="SortBy">
+    <option>SORT BY COLLECTION</option>
+    {% for collection in collections%}
+    
+    	<option value="{{ collection.url }}">{{ collection.title }}</option>
+    
+    {% endfor %}
+    
+  </select>
+</div>
+
+<script>
+	$('select').change(function(){
+        var url = $(this).val();
+        window.location = url;
+    });
+</script>

@@ -1,0 +1,168 @@
+<!--Heading bar for "free shipping"-->
+<!--<div class="heading-bar">-->
+  <!--<h1>FREE SHIPPING ON ORDERS OVER $100 </h1>-->
+<!--</div>-->
+
+{% comment %}
+ 
+  <div class="wrapper medium-down--hide">
+    <div class="large--display-table">
+
+      <div class="header-bar__left large--display-table-cell">
+
+        {% comment %}
+          Add social links to header
+        {% endcomment %}
+
+        {% comment %}
+        <div class="header-bar__module header-bar__module--list">
+          {% include 'social-links' %}
+        </div>
+        {% endcomment %}
+
+        {% if settings.header_message == blank %}
+          {% if cart.announcements.size > 0 %}
+            <div class="header-bar__module header-bar__message">
+              {{ cart.announcements.first }}
+            </div>
+          {% elsif settings.header_search_enable %}
+            <div class="header-bar__module header-bar__search">
+              {% include 'search-bar' with 'header' %}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="header-bar__module header-bar__message">
+            {{ settings.header_message }}
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="header-bar__right large--display-table-cell">
+
+        {% if shop.customer_accounts_enabled %}
+          <ul class="header-bar__module header-bar__module--list">
+            {% if customer %}
+              <li>
+                <a href="/account">{{ 'layout.customer.account' | t }}</a>
+              </li>
+              <li>
+                {{ 'layout.customer.log_out' | t | customer_logout_link }}
+              </li>
+            {% else %}
+              <li>
+                {{ 'layout.customer.log_in' | t | customer_login_link }}
+              </li>
+              <li>
+                {{ 'layout.customer.or' | t }}
+              </li>
+              <li>
+                {{ 'layout.customer.create_account' | t | customer_register_link }}
+              </li>
+            {% endif %}
+          </ul>
+        {% endif %}
+
+        <div class="header-bar__module">
+          <span class="header-bar__sep" aria-hidden="true"></span>
+          <a href="/cart" class="cart-page-link">
+            {% comment %}
+            <span class="icon icon-cart header-bar__cart-icon" aria-hidden="true"></span>
+           	{% endcomment %}            	
+            <span class="white">MY</span><span class="red"> BULK</span> <span class="white">CART</span> >
+          </a>
+        </div>
+		{% comment %}
+        <div class="header-bar__module">
+          <a href="/cart" class="cart-page-link">
+            {{ 'layout.cart.title' | t }}<span {% if cart.item_count == 0 %}class="hidden-count"{% endif %}>:</span>
+            <span class="cart-count header-bar__cart-count{% if cart.item_count == 0 %} hidden-count{% endif %}">{{ cart.item_count }}</span>
+          </a>
+        </div>
+        {% endcomment %} 
+        {% if settings.header_search_enable %}
+          {% unless settings.header_message == blank and cart.announcements.size == 0 %}
+            <div class="header-bar__module header-bar__search">
+              {% include 'search-bar' with 'header' %}
+            </div>
+          {% endunless %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+   {% endcomment %}
+
+<div class="header-bar large--hide">
+  <div class="wrapper moble_menu_wraper">
+
+    
+    <div class="grid__item medium--four-sixths large--four-sixths"
+         style="border:2px solid #464646; border-bottom:0; border-top:0; border-right:0; padding:8px 15px; text-align: center; font-weight: 500;">
+      Got beef? Give us a call at <a href="tel:+14245363050"><span class="red-text">424.536.3050</span></a>
+    </div>
+    
+    
+    
+    <button type="button" class="mobile-nav-trigger" id="MobileNavTrigger">
+      <span class="icon icon-hamburger" aria-hidden="true"></span>
+      <!--{{ 'layout.navigation.menu' | t }}-->  
+    </button>
+    
+    
+    
+    <div class="small--zero medium--one-twelfth large--one-twelfth header_main_logo mob_logo">
+
+      <a href="/" class="medium--hide nav-btn-padding" style="display: inline-block; float:right; position: relative; top:0px;">
+        <img src="{{ 'bulkArm.png' | asset_url  }}">
+      </a>
+      <div style="clear:both"></div>
+
+    </div>
+    
+    
+    
+    <div>
+    <form action="/search" method="get" class="header-bar__search-form clearfix" role="search">
+      <input type="search" name="q" value="" aria-label="Search" class="header-bar__search-input"
+             style="width: 100% !important; background: #c5c5c5; border:0;"
+             placeholder="Search">
+      <button type="submit" class="btn icon-fallback-text header-bar__search-submit"
+              style="background: transparent; position: absolute !important; top:0px !important; right:24px !important;">
+        <span class="icon icon-search" aria-hidden="true"></span>
+        <span class="fallback-text"></span>
+      </button>
+    </form>
+    </div>
+    
+    
+    
+    
+    <!--<a href="/cart" class="cart-page-link mobile-cart-page-link">
+      <span class="icon icon-cart header-bar__cart-icon" aria-hidden="true"></span>
+      {{ 'layout.cart.title' | t }}
+      <span class="cart-count {% if cart.item_count == 0 %} hidden-count{% endif %}">{{ cart.item_count }}</span>
+    </a>-->
+    
+    
+    
+	<a href="/cart" class="cart-page-link " id="my_cart">
+      <div style="position: relative;">
+        <div class="cart-count red-text"
+             style="text-align: center; font-size:1.2em; font-weight:bold; position: relative; top:-0px; left:4px;">
+          {{cart.item_count}}
+        </div>
+        <div style="text-align: center; font-weight:bold; position: relative; top:-10px;">
+          <!--<i class="fas fa-shopping-cart white-text"></i>-->
+          <img src="{{  'cart.png' | asset_url }}">
+        </div>
+      </div>
+
+    </a>
+    
+    
+    
+    
+  </div>
+  {% include 'mobile-nav' %}
+</div>

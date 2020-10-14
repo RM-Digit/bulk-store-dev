@@ -1,0 +1,66 @@
+{% if settings.newsletter_form_action != blank %}
+<div class="header-signup hidden" style="">
+  <div class="wrapper" style="text-align:center;">
+    <form action="{{ settings.newsletter_form_action }}" method="post" id="mc-embedded-subscribe-form-header" name="mc-embedded-subscribe-form-header" target="_blank" class="">
+      <input class="news-input" style="float:left; padding:6px 10px 5px;" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="header-mail" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+      <input type="submit" class="btn news-button" style="border-radius: 0px; float:left; padding:8px 12px;" name="subscribe" id="header-subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
+    </form>
+  </div>
+  <div style="clear:both;"></div>
+  <div id="close-newsletter-btn" style="color: #AF2525; cursor:pointer; float:left; padding:5px; position:absolute; top:10px; right:5px;">✖</div>
+</div>
+<script>
+  var hideSignupCookieName = 'hide-bulk-header-signup';
+
+  $(document).ready(function(){
+    var hideHeaderSignup = getCookie(hideSignupCookieName);
+    
+    if(hideHeaderSignup == 'true'){
+      $('.header-signup').addClass('hidden');
+    } else {
+      $('.header-signup').removeClass('hidden');
+    }
+  
+    $('#subscribe').click(function(){
+     $('.header-signup').addClass('hidden');
+      setCookie(hideSignupCookieName, true, 365);
+    });
+    
+    $('#close-newsletter-btn').click(function(){
+      $('.header-signup').addClass('hidden');
+      setCookie(hideSignupCookieName, true, 1);
+    });
+
+    $('#header-subscribe').click(function(){
+      $('.header-signup').addClass('hidden');
+      setCookie(hideSignupCookieName, true, 365);
+    });
+
+
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return undefined;
+    }
+
+  });
+</script>
+
+{% endif %}

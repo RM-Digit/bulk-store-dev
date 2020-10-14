@@ -1,0 +1,100 @@
+{% assign number_of_products = all %}
+{% assign number_of_products_to_fetch = number_of_products | plus: 1 %}
+
+{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+{% assign found_a_collection = false %}
+{% for c in product.collections %}
+{% if found_a_collection == false and c.handle == 'shop' and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+{% assign found_a_collection = true %}
+{% assign collection = c %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if collection and collection.products_count > 1 %}
+
+<div class="bulk-section-header-wrapper">
+  <div class="bulk-section-header similer_product_heading" style="">
+    <span>Customers who viewed this item also bought:</span>
+  </div>
+  <div class="bulk-section-header-line" style="top:-17px;"></div>
+</div>
+
+<div class="grid-uniform grid-link__container" style="margin-bottom:50px;">
+  {% assign current_product = product %}
+  {% assign current_product_found = false %}
+
+  {% for product in collection.products  %} 
+  {% if product.handle == current_product.handle %}
+  {% assign current_product_found = true %}
+  {% endif %}
+  {% endfor %}
+
+  {% assign grid_item_width = 'large--one-quarter medium--one-quarter small--one-half' %}
+
+  <div class="ccarousel"><!-- custom carousel starts-->
+    <button class="btn2"><img src="{{ 'caretLeft.png' | asset_url  }}" height="200px" width="50px"></button>
+
+    <div class="mainn" style="padding-top:50px; padding-bottom:50px;">
+      <ul class="inner">
+        {% for product in collection.products %}
+        {% if product.id != current_product.id %}
+        <li class="item-display-box-wrapper-2">
+          <a href="{{ product.url | within: collection }}" >
+
+            <div class="item-display-box" style="top:-50px; position: relative;">
+              <div class="item-display-box-image" style="min-height:50px; background-image:url({{ product | img_url: 'large' }});">
+
+                <!--<img src="{{ product.featured_image | img_url: 'large' }}" style="opacity: 0;"/>-->
+
+                <div class="red-circle item-display-box-circle">
+                  <i class="fa fa-plus white-plus"></i>
+                </div>
+              </div>
+              <div class="product-display-box-title">{{ product.title }}</div>
+              <div style="text-align:center; margin:0 auto;">{% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: false %}</div>
+              <!--                         <div class="product-display-box-price">Starts at {{ product.price | money }}</div> -->
+            </div>
+
+
+
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <button class="btn1"><img src="{{ 'caretRight.png' | asset_url  }}" height="200px" width="50px"></button>
+    <div style="clear:both;"></div>
+  </div><!-- custom carousel ends-->
+
+
+</div>
+{% endif %}
+
+<div style="margin-bottom:30px;"></div>
+
+<script>  
+    $(document).ready(function(){
+    var itemDisplayBoxWidthFactor = 1;
+    if($( window ).width() < 760 ){
+      itemDisplayBoxWidthFactor = 0.7;
+      $('.item-display-box-wrapper-2').each(function(){
+        var setWidth = $( window ).width() - 92;
+        $(this).css('width',setWidth);
+//         console.log($( document ).width());
+//         console.log($( window ).width());
+//         console.log('Set width:'+setWidth);
+      });
+    }
+
+    $(".item-display-box").each(function () {
+      $(this).css('max-height', $(this).width() + 60)
+    });
+
+    $(".item-display-box-image").each(function () {
+      $(this).css('height', $(this).width() * itemDisplayBoxWidthFactor)
+    });
+  });
+</script>

@@ -1,0 +1,156 @@
+<div class="grid" style="background:url('{{ 'login_bg.jpg' | asset_url }}') center center no-repeat; background-size: cover; padding: 80px 10px;">
+
+  <div class="grid__item large--one small--text-center">
+
+    {% comment %}
+      If a user has successfully requested a new password, the form.posted_successfully? variable
+      is set to true within the 'recover_customer_password' form only. Within that form you'll see
+      us assign a variable 'reset_success' to true, which is used in JS to show our success message.
+    {% endcomment %}
+    <div class="note form-success" id="ResetSuccess" style="display:none;">
+      {{ 'customer.recover_password.success' | t }}
+    </div>
+
+
+    <div style="text-align: center; margin-bottom:30px;">
+      <img src="{{ 'bulkArm.png' | asset_url }}">
+    </div>
+
+    <div class="account-box" style="" >
+
+      <div class="">
+        <div class=" asphaltic" style="color:white; font-size:6em; margin-bottom:30px;">B.U.L.K Login</div>
+      </div>
+
+    <div id="CustomerLoginForm" style="color:white;">
+
+
+      {% form 'customer_login' %}
+
+
+
+        {{ form.errors | default_errors }}
+
+        <label for="CustomerEmail" class="label--hidden">{{ 'customer.login.email' | t }}</label>
+        <input type="email" class="login-input" style="background: none; color:white;" name="customer[email]" id="CustomerEmail" placeholder="{{ 'customer.login.email' | t }}"{% if form.errors contains "email" %} class="error"{% endif %} autocorrect="off" autocapitalize="off" autofocus>
+
+        {% if form.password_needed %}
+
+          <label for="CustomerPassword" class="label--hidden">{{ 'customer.login.password' | t }}</label>
+          <input type="password" class="login-input" style="margin-bottom:5px; background: none; color:white;" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+
+
+            <a href="#" onclick="showRecoverPasswordForm();return false;" style="margin-bottom:15px; display: inline-block;">{{ 'customer.login.forgot_password' | t }}</a>
+
+
+        {% endif %}
+
+
+          <input type="submit" class="" value="LOGIN" style="color:white; background: #006600; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px;">
+
+
+
+        <a href="/account/register" class="register_link" style="color:white; background: #666666; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px; padding:8px 35px; font-weight:500; ">CREATE AN ACCOUNT</a>
+
+
+
+      {% endform %}
+
+      </div>
+
+      {% comment %}
+      This page uses JavaScript to show/hide the recover password form
+      {% endcomment %}
+      <div id="RecoverPasswordForm" style="display: none; color:white;">
+
+
+        <div style="text-align: left; max-width:240px; margin:0 auto 30px;">We will send you an email to reset your password.</div>
+
+        {% comment %}
+        This form must use 'recover_customer_password'
+        {% endcomment %}
+        {% form 'recover_customer_password' %}
+
+        {{ form.errors | default_errors }}
+
+        {% comment %}
+        form.posted_successfully? is true only inside this form, but we want
+        to show a success message outside of it. To do so, set the variable
+        reset_success to true, then use JS to show our success message above.
+        {% endcomment %}
+        {% if form.posted_successfully? %}
+        {% assign reset_success = true %}
+        {% endif %}
+
+        <label for="RecoverEmail" class="label--hidden">{{ 'customer.recover_password.email' | t }}</label>
+        <input type="email"  class="login-input" style="margin-bottom:5px; background: none; color:white;" value="" name="email" id="RecoverEmail" placeholder="{{ 'customer.recover_password.email' | t }}" autocorrect="off" autocapitalize="off">
+
+
+        <input type="submit" class="" style="color:white; background: #006600; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px;" value="{{ 'customer.recover_password.submit' | t }}">
+
+        <br>
+
+        <a href="#" onclick="hideRecoverPasswordForm();return false;">{{ 'customer.recover_password.cancel' | t }}</a>
+
+        {% endform %}
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top:30px;">
+      <img src="{{ 'bulkArm.png' | asset_url }}">
+    </div>
+
+
+
+    {% comment %}
+      If accounts are set as optional, the following will be shown as an option
+      during checkout, not on the default /login page.
+    {% endcomment %}
+    {% if shop.checkout.guest_login %}
+      <hr>
+
+      <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+      {% form 'guest_login' %}
+        <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+      {% endform %}
+    {% endif %}
+
+  </div>
+
+</div>
+
+<script>
+  /*
+    Show/hide the recover password form when requested.
+  */
+  function showRecoverPasswordForm() {
+    document.getElementById('RecoverPasswordForm').style.display = 'block';
+    document.getElementById('CustomerLoginForm').style.display='none';
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('RecoverPasswordForm').style.display = 'none';
+    document.getElementById('CustomerLoginForm').style.display = 'block';
+  }
+
+  // Allow deep linking to the recover password form
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+
+  // reset_success is only true when the reset form is
+  {% if reset_success %}
+    document.getElementById('ResetSuccess').style.display = 'block';
+  {% endif %}
+</script>
+
+<script>
+    jQuery(document).ready(function () {
+        //$("#bt").on("click", function () {
+            if (window.location.href.indexOf('?checkout_url=') > 0) {
+                //console.log("The URL contains ?book");
+                jQuery('.register_link').attr('href','/account/register?checkout_url=https://www.bulkbeefjerky.com/pages/bulk-kindness');
+            }
+        //});
+    });
+</script>

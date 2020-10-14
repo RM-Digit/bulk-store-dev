@@ -1,0 +1,257 @@
+{% assign products_per_row = settings.collections_products_per_row %}
+{% assign rows = settings.collections_rows %}
+{% assign total_products = products_per_row | times: rows %}
+
+
+
+<div class="grid--full" style="margin-bottom:10px;">
+  <div class="grid__item small--zero medium--zero large--one-twelfth">
+  </div>
+
+  <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+
+    {% if collection.title == collections['shop'].title %}
+
+    {% else %}
+    <div class="back-btn-wrapper" style="margin-top:20px;">
+      <a href="{{ collections['shop'].url }}" style="color:black;">
+        <img class="back-btn-img" src="{{'backButton.jpg' | asset_img_url}}">
+        <div class="back-btn-text">BACK</div>
+      </a>
+    </div>
+    {% endif %}
+
+
+    <div class="grid--full header-margin">
+      <div class="grid__item">
+        <div class="bulk-section-header-wrapper">
+          <div>
+            {% if collection.title == 'The BULK Shop' %}
+            <h1 class="bulk-section-header">
+            	<span class="">SHOP</span>
+            </h1>  
+            {% else %}
+            <h1 class="bulk-section-header">
+            	<span style="text-transform:capitalize;">
+              		{{ collection.title }}
+            	</span>
+            </h1>
+            {% endif %}
+          </div>
+          <div class="bulk-section-header-line"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="grid__item small--one-whole medium--one-whole large--one-whole">
+      <div class="grid--full">
+
+        {% for product in collection.products %}
+
+        {% assign variant_weight = null %}
+        {% assign variant_weight_unit = null %}
+
+        {% assign smallest_weight = null %}
+        {% assign smallest_weight_unit = null %}
+
+        {% assign largest_weight = null %}
+        {% assign largest_weight_unit = null %}
+
+
+
+        <!-- Find variant weights-->
+
+        {% for variant in product.variants %}
+
+
+        {% assign variant_option2 = variant.option2 | split: ' ' %}
+
+        {% assign variant_weight = variant_option2.first %}
+        {% assign variant_weight_unit = variant_option2.last | downcase %}
+
+
+        {% if variant_weight_unit == 'oz' or variant_weight_unit == 'lbs' %}
+
+        {% assign variant_weight_oz = variant_weight | plus:0 %}
+
+        {% if variant_weight_unit == 'lbs' %}
+        {% capture variant_weight_oz %}
+        {{ variant_weight | times: 16 }}
+        {% endcapture %}
+        {% endif %}
+
+        {% if smallest_weight == null %}
+        {% assign smallest_weight = variant_weight_oz %}
+        {% endif %}
+
+        {% if variant_weight_oz < smallest_weight %}
+        {% capture smallest_weight %}
+        {{ variant_weight_oz }}
+        {% endcapture %}
+        {% endif %}
+
+
+        {% if largest_weight == null %}
+        {% assign largest_weight = variant_weight_oz %}
+        {% endif %}
+
+
+        {% if variant_weight_oz > largest_weight %}
+        {% assign largest_weight = variant_weight_oz %}
+        {% endif %}
+
+
+
+
+        {% endif %}
+
+
+
+
+        {% endfor %}
+
+
+
+       
+        <!-- END Find variant weights-->
+
+
+
+        {% assign modulo = forloop.index | modulo:5 %}
+
+        <div class="grid__item small--one-whole medium--six-twelfths large--one-fifth">
+
+
+          <div class="item-display-box shop-product-wrapper">
+            <a href="{{ product.url }}">
+
+              <div class="grid--full shop-product-box">
+                <div class="grid__item small--four-twelfths medium--one-whole shop-product-image-container">
+                  <img class="item-display-box-image" style="position:relative; min-height:109px" src="{{ product | img_url: 'large' }}">
+                    {% if product.price < product.compare_at_price %}
+                    <div class="sales-overlay" style="position:absolute; opacity:0.8; top:0; left:10px; right:66%; background:darkred; color:white; font-size:1em; font-weight: 500; padding: 4px; text-align:center;">SALE</div>
+                    {% endif %}
+                  
+                </div>
+                <div class="grid__item small--six-twelfths medium--one-whole">
+
+                  <div class="desktop">
+                    <div class="product-title-overlay">{{ product.title }}</div>
+                    <div class="product-display-box-title"> {{ product.metafields.descriptions.collection }}</div>
+                    <div style="color:black; text-align:center;">{{ product.metafields.descriptions.sizes }}</div>
+                  </div>
+
+                  <div class="mobile" style="position:relative;">
+                    <div style="width:100%; color:black; padding-left:10px;">
+                      <div class="avenir" style="line-height:1em; padding-top:15px; font-size:1em; font-weight:bold;">{{ product.title }}</div>
+                      <div class="" style="font-size:0.8em;"> {{ product.metafields.descriptions.collection }}</div>
+                      <div class="red-text">
+                        {{ product.metafields.descriptions.sizes }}
+                      </div>
+                    </div>
+                  
+                  </div>
+
+                </div>
+
+                <div class="grid__item small--two-twelfths medium--none mobile">
+                 <img class="lazyload" data-src="{{ 'redArrow.png' | asset_url }}" class="mobile-small" style="position:absolute; top: 35%; right:15px; max-width:8%;">
+                </div>
+                
+                
+                
+              </div>
+
+            </a>
+          </div>
+
+        </div>
+        {% endfor %}
+
+      </div>
+
+
+
+      {% if collection.title == 'Sale items' %}
+
+      {% if collection.products.count == 0 %}
+      <div style="text-align:center; margin:30px auto 60px; font-size:1.5em; max-width: 600px; padding: 0 15px;">
+        There are currently no items on sale.
+        <p></p>
+        Join the B.U.L.K Fam and Stay tuned for discounts, offers, and flash sales.
+      </div>
+      {% endif %}
+
+      {% else %}
+      <div style="margin-bottom:45px;">
+        <a href="/collections/sale-items">
+          <img class="desktop" src="{{ 'shopSalesBanner.jpg' |  asset_img_url: '1920x100' }}" >
+          <div class="mobile" style="padding:15px;"> <img src="{{ 'mobile_sales_banner.jpeg' |  asset_url }}" ></div>
+
+        </a>
+      </div>
+
+      {% endif %}
+
+
+    </div>
+
+  </div>
+
+  <div class="grid__item small--zero medium--zero large--one-twelfth">
+  </div>
+</div>
+
+{% include 'email-signup-banner' %}
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    /*Toggle Start*/
+    jQuery(".tag-section-header.div-style").click(function(){
+      jQuery('ul.ul-style').toggle();
+    });
+
+    jQuery(".tag-section-header.div-flavor").click(function(){
+      jQuery('ul.ul-flavor').toggle();
+    });
+
+    jQuery(".tag-section-header.div-heat").click(function(){
+      jQuery('ul.ul-heat').toggle();
+    });
+
+    jQuery(".tag-section-header.div-texture").click(function(){
+      jQuery('ul.ul-texture').toggle();
+    });
+
+    jQuery(".tag-section-header.div-sale").click(function(){
+      jQuery('ul.ul-sale').toggle();
+    });
+
+
+    if($(window).width() > 768 ){
+      $(".item-display-box").each(function () {
+        $(this).css('height', $(this).width() +150)
+      });
+    }
+
+    $(".item-display-box-image").each(function () {
+      $(this).css('height', $(this).width() * 1)
+    });
+
+    var filtersDisplayed = false;
+    $("#filterDisplayBtn").on('click', function(){
+      if(filtersDisplayed) {
+        $("#search-tags").removeClass('open');
+        $("#filterDisplayBtn").html('SHOW FILTERS <i class="fa fa-caret-down"></i>');
+
+      } else {
+        $("#search-tags").addClass('open');
+        $("#filterDisplayBtn").html('HIDE FILTERS <i class="fa fa-caret-up"></i>');
+      }
+      filtersDisplayed = !filtersDisplayed;
+
+    });
+  });
+</script>

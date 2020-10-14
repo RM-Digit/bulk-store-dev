@@ -1,0 +1,91 @@
+{% if template contains 'article' or template contains 'blog' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+  {% capture shareTitle %}{{ article.title | url_param_escape }}{% endcapture %}
+{% elsif template contains 'product' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% capture shareTitle %}{{ product.title | url_param_escape }}{% endcapture %}
+{% elsif template == 'password' %}
+  {% capture permalinkURL %}{{ shop.url }}{% endcapture %}
+  {% capture shareTitle %}{% unless shop.description == blank %}{{ shop.description | url_param_escape }}{% else %}{{ shop.name | url_param_escape }}{% endunless %}{% endcapture %}
+{% endif %}
+
+{% comment %}
+  Share button styles are:
+  * is-clean
+  * normal
+{% endcomment %}
+{% assign shareButtonStyle = 'normal' %}
+
+<div class="social-sharing {{ shareButtonStyle }}" data-permalink="{{ permalinkURL }}">
+<ul class="social-icons">
+  
+  {% if settings.share_facebook %}
+  <li>
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}" class="share-facebook1">
+      <span class="icon icon-facebook"></span>
+     {% comment %}
+      {% if settings.social_sharing_count %}
+        <span class="share-count">0</span>
+      {% endif %}
+       <span class="share-title">{{ 'general.social.share_on_facebook' | t }}</span>
+      {% endcomment %}
+    </a>
+     </li>
+  {% endif %}
+ 
+
+  {% if settings.share_twitter %}
+  <li>
+    <a target="_blank" href="//twitter.com/share?text={{ shareTitle }}&amp;url={{ permalinkURL }}" class="share-twitter1">
+      <span class="icon icon-twitter"></span>
+     {% comment %} <span class="share-title">{{ 'general.social.share_on_twitter' | t }}</span>{% endcomment %}
+    </a>
+     </li>
+  {% endif %}
+ 
+  
+  {% if product.featured_image or article.image %}
+<li>
+    {% if settings.share_pinterest %}
+      <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{% if template contains 'product' %}{{ product | img_url: '1024x1024' }}{% else %}{{ article | img_url: '1024x1024' }}{% endif %}&amp;description={{ shareTitle }}" class="share-pinterest1">
+        <span class="icon icon-pinterest"></span>
+      {% comment %}  <span class="share-title">{{ 'general.social.share_on_pinterest' | t }}</span>
+        {% if settings.social_sharing_count %}
+          <span class="share-count">0</span>
+        {% endif %}
+        {% endcomment %}
+      </a>
+   </li>
+    {% endif %}
+ 
+
+  
+    {% if settings.share_fancy %}
+  <li>
+      <a target="_blank" href="//fancy.com/fancyit?ItemURL={{ permalinkURL }}&amp;Title={{ shareTitle }}&amp;Category=Other&amp;ImageURL={% if template contains 'product' %}{{ product | img_url: '1024x1024' }}{% else %}{{ article | img_url: '1024x1024' }}{% endif %}" class="share-fancy1">
+        <span class="icon icon-fancy"></span>
+      {% comment %}  <span class="share-title">{{ 'general.social.share_on_fancy' | t }}</span>{% endcomment %}
+      </a>
+    {% endif %}
+ </li>
+  {% endif %}
+ 
+  
+  {% if settings.share_google %}
+  <li>
+    <a target="_blank" href="//plus.google.com/share?url={{ permalinkURL }}" class="share-google1">
+      <!-- Cannot get Google+ share count with JS yet -->
+      <span class="icon icon-google_plus"></span>
+      {% comment %}
+      {% if settings.social_sharing_count %}
+        <span class="share-count">+1</span>
+      {% else %}
+        <span class="share-title">+1</span>
+            {% endif %}
+      {% endcomment %}
+    </a>
+      </li>
+  {% endif %}
+
+  </ul>
+</div>

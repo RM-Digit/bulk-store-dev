@@ -1,0 +1,85 @@
+<script type="text/javascript" src="{{ 'custom-carousel-2.js' | asset_url }}" async defer> </script>
+
+{% assign categoriesToDisplay = "beef jerky,poultry,sticks,fish,game,exotic,nuts,samplers" | split: ',' %}
+
+
+<div class="bulk-section-header-wrapper">
+    <div class="bulk-section-header-wrapper">
+        <div class="bulk-section-header">
+           Categories
+        </div>
+        <div class="bulk-section-header-line"></div>
+    </div>
+</div>
+
+<div class="grid-uniform grid-link__container" style="position: relative; top:-50px;">
+
+    {% assign grid_item_width = 'large--one-quarter medium--one-quarter small--one-half' %}
+
+    <div class="ccarousel-2"><!-- custom carousel starts-->
+        <input type="hidden" class="totalprod-2" value="{{ categoriesToDisplay | size }}">
+        <button class="btnL-2"><img src="{{ 'caretLeft.png' | asset_url  }}" height="120px" width="50px"></button>
+
+        <div class="mainn">
+            <ul class="inner" style="padding-left: 10px;">
+
+
+                {% for categoryToDisplay in categoriesToDisplay %}
+
+                {% assign categoryFound = false %}
+
+                {% for tag in collections['shop'].all_tags %}
+
+                {% if categoryFound == false %}
+
+                {% assign split_tag = tag | downcase | split: ':' %}
+
+                {% if split_tag[1] == categoryToDisplay %}
+
+                    {% assign categoryFound = true %}
+
+                    {% assign new_url = tag | link_to_add_tag: tag | split: 'href="' | last | split: '"' | first %}
+
+                    {% assign handleized_categoryToDisplay = categoryToDisplay | handleize  %}
+                    {% assign collection = collections[handleized_categoryToDisplay] %}
+
+                    <li>
+                        <a href="/collections/shop{{ new_url }}" >
+
+                            <div class="item-display-box" style="top:0px; position: relative;">
+                                <div class="item-display-box-image" style="min-height:50px; background-image:url({{ collection | img_url: 'medium' }});">
+
+                                    <!--<img src="{{ product.featured_image | img_url: 'small' }}" style="opacity: 0;"/>-->
+
+                                </div>
+                                <div class="red-text" style="text-align: center; font-size:1.2em; font-weight: 500;">{{ split_tag[1] | upcase }}</div>
+                                <div class="product-display-box-price"></div>
+                            </div>
+
+
+
+                        </a>
+                    </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <button class="btnR-2"><img src="{{ 'caretRight.png' | asset_url  }}" height="120px" width="50px"></button>
+    </div><!-- custom carousel ends-->
+
+</div>
+
+
+
+
+<script>
+    $(".item-display-box").each(function () {
+        $(this).css('max-height', $(this).width() + 100)
+    });
+    $(".item-display-box-image").each(function () {
+        $(this).css('height', $(this).width() * 1)
+    });
+</script>

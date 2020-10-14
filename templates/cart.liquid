@@ -1,0 +1,419 @@
+{% include 'bold-cart' %}
+
+<style>
+  .one_time_div, .bold_active, .recurring_div{
+    background-color: black;
+  }
+</style>
+{% comment %}
+
+This is your /cart template.
+
+{% endcomment %}
+
+
+<div class="grid--full" style="margin-bottom:10px;">
+  <div class="grid__item small--zero medium--zero large--one-twelfth">
+  </div>
+
+  <div class="grid__item small--one-whole medium--one-whole large--ten-twelfths">
+
+    <div class="grid--full header-margin">
+      <div class="grid__item">
+        <div class="bulk-section-header-wrapper">
+          <div class="bulk-section-header">
+
+            My <span class="red-text">Cart</span>
+
+          </div>
+          <div class="bulk-section-header-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container12" style="padding:10px;">
+
+  <div class="grid--full" style="padding-bottom:8px; border-bottom:2px solid #6a6a6a;">
+
+    <div class="grid__item small--whole medium--whole cart-contact">
+
+      <div style="font-size:1.3em; font-weight: bold; color:black;display: block; text-align:center;">
+        <a href="tel:4245363050" style="color: black;">Contact <span class="red-text">B.U.L.K</span></a>
+      </div>
+    </div>
+  </div>
+
+  {% if cart.item_count > 0 %}
+
+  <form action="/cart" method="post" novalidate class="cart">
+
+
+    <div class="buyx-msg"></div>
+    {% include 'buyx-cart' %}
+
+    {% if cart.announcements.size > 0 %}
+    <ul class="note">
+      {% for announcement in cart.announcements %}
+      <li>{{ announcement }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if cart.errors.size > 0 %}
+    <ul class="note errors">
+      {% for error in cart.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="medium-down--hide cart__header-labels" style="border-bottom: 1px solid #9b9b9b; font-size:1.2em; font-weight: bold; color:black; padding:8px 0; margin-bottom: 15px;">
+      <div class="grid--full">
+        <div class="grid__item large--one-half">
+          ITEM
+        </div>
+        <div class="grid__item large--one-half">
+          <div class="grid--full">
+            <div class="grid__item one-quarter medium-down--one-quarter">
+              PRICE
+            </div>
+            <div class="grid__item one-quarter medium-down--one-quarter">
+              QTY
+            </div>
+            <div class="grid__item one-quarter medium-down--one-quarter">
+              TOTAL
+            </div>
+            <div class="grid__item one-quarter medium-down--one-quarter">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %}
+    Loop through products in the cart
+    {% endcomment %}
+    <script>mixed_cart = false;</script>
+    {% assign show_paypal = true %} 
+    {% for item in cart.items %}
+
+    {% include 'bold-cart-item' with item %}
+
+    <!--div style="color:white;">
+{% for property in item.properties %}
+<li>{{ property.first }}: {{ property.last }}</li>
+{% endfor %}
+</div-->
+
+
+
+    {% include 'bold-ro-price-fix' %}
+    {% assign prod_index = forloop.index0 %}
+    <input type="hidden" name="product_id[{{ forloop.index0 }}]" value="{{ item.product.id }}">
+    <input type="hidden" name="variant_id[{{ forloop.index0 }}]" value="{{ item.variant.id }}" {% unless item.variant.inventory_management == blank or item.variant.inventory_policy == 'continue' %} max="{{ item.variant.inventory_quantity }}" {% endunless %}>
+    <input type="hidden" name="quantity[{{ forloop.index0 }}]" value="{{ item.quantity }}">
+    <div class="cart__row" >
+      <div class="grid--full cart__row--table-large">
+        <div class="grid__item small--one-half large--one-eighth" style="padding-right: 15px;">
+          <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
+        </div>
+        <div class="grid__item small--one-half large--three-eighths"  style="text-align: left;">
+
+          <a href="{{ item.url }}" class="cart-item-text">
+            {{ item.product.title  | remove: 'Default Title / ' | remove: ' / Default' | remove: 'Default' | remove: ' / Title' | remove: 'Title' }}
+            <span class='booster-cart-item-success-notes' data-key='{{item.key}}'></span><span class='booster-cart-item-upsell-notes' data-key='{{item.key}}'></span>
+            <br>
+
+            {% if item.product.title == 'B.U.L.K. Jerky of the Month Club' %}
+            {{ item.variant.options[0] }}
+            <br>CHARGED EVERY {{ item.variant.options[1] }} MONTHS
+            {% else %}
+            {{ item.variant.title  | remove: 'Default Title / ' | remove: ' / Default' | remove: 'Default' | remove: ' / Title' | remove: 'Title' }}
+            {% endif %}
+
+
+          </a>
+          {% unless item.variant.title contains 'Default' %}
+
+          <!--               <small> {% comment %}{{ item.variant.title }}  {% endcomment %}
+{{ item.variant.title  | remove: 'Default Title / ' | remove: ' / Default' | remove: 'Default' | remove: ' / Title' | remove: 'Title' }}
+</small>
+-->
+
+          {% endunless %}
+
+
+
+          {% comment %}
+          <p>{{ item.vendor }}</p>
+          {% endcomment %}
+
+          {% comment %}
+          Optional, loop through custom product line items if available
+
+          For more info on line item properties, visit:
+          - http://docs.shopify.com/support/your-store/products/how-do-I-collect-additional-information-on-the-product-page-Like-for-a-monogram-engraving-or-customization
+          {% endcomment %}
+
+          {% assign propertySize = item.properties | size %}
+          {% if propertySize > 0 %}
+
+
+
+
+
+          {% for p in item.properties %}
+
+
+          {% unless p.last == blank or p.first == "subscription_id" or p.first == "shipping_interval_frequency" or p.first == "shipping_interval_unit_type" or p.first == "charge_interval_unit_type" or p.first == "charge_interval_frequency" or p.first == "%}
+
+          {% assign ignoreProperty = false %}
+
+          {% assign ignoreList = 'frequency,group,discount,price' | split:',' %}
+
+          {% for word in ignoreList %}
+          {% if p.first contains word %}
+          {% assign ignoreProperty = true %}
+
+          {% endif %}
+          {% endfor %}
+
+
+          {% if ignoreProperty == false %}
+          <div style="color:black; display:block;">
+
+            {{ p.first | replace: '_', ' ' }}:
+
+
+            {% comment %}
+            Check if there was an uploaded file associated
+            {% endcomment %}
+            {% if p.last contains '/uploads/' %}
+            <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+            {% else %}
+            {{ p.last }}
+            {% endif %}
+
+
+
+          </div>
+          {% endif %}
+
+
+          {% endunless %}
+          {% endfor %}
+          {% endif %}
+
+          {{ bold_recurring_desc }}
+
+        </div>
+
+        <div class="grid__item large--one-half">
+          <div class="grid--full cart__row--table-large">
+
+            <div class="grid__item one-quarter" style="text-align: left;">
+              <span class="cart__mini-labels">{{ 'cart.label.price' | t }}</span>
+              <span class="cart-item-text">{{ bold_item_price | money }}</span>
+            </div>
+
+            <div class="grid__item one-quarter text-center" style="text-align: left; padding-right: 20px;">
+              <span class="cart__mini-labels">{{ 'cart.label.quantity' | t }}</span>
+              <input type="number" class="cart__quantity-selector" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0">
+            </div>
+
+            <div class="grid__item one-quarter" style="text-align: left;">
+              <span class="cart__mini-labels">{{ 'cart.label.total' | t }}</span>
+              <span class="cart-item-text">
+                {% if item.original_line_price != bold_item_line_price %}
+                <small class="cart-item__original-price"><s>{{ item.original_line_price | money }}</s></small>
+                {% endif %}
+                {{ bold_item_line_price | money }}
+              </span>
+              {% if item.original_line_price != bold_item_line_price %}
+              {% for discount in item.discounts %}
+              <small class="cart-item__discount">
+                {{ discount.title }}
+              </small>
+              {% endfor %}
+              {% endif %}
+            </div>
+
+            <div class="grid__item one-quarter" style="text-align: right;">
+              <span class="cart__mini-labels">&nbsp;</span>
+              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart-item-text {{ bold_remove_class }}" style="line-height:1em; color:white; background:darkred; padding:2px 8px; font-size: 1em; font-weight: bold;">
+                <small>REMOVE</small>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% if cart.discounts.size > 0 %}
+    <div class="cart-additional-savings text-right cart__row">
+      <span class="label cart-additional-savings__label">{{ 'cart.general.additional_savings' | t }}</span>
+      <span class="cart-item-text cart-additional-savings__price">{{ cart.discount.total_savings | money }}</span>
+      {% for discount in cart.discounts %}
+      <small class="cart-additional-savings__savings">{{ discount.title }}</small>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="" style="margin-bottom:50px;">
+      <div class="grid">
+        {% comment %}
+        Optional, add a textarea for special notes
+        - Your theme settings can turn this on or off. Default is on.
+        - Make sure you have name="note" for the message to be submitted properly
+        {% endcomment %}
+        {% if settings.cart_notes_enable %}
+        {% assign noteSize = cart.note | size %}
+        <div class="grid__item large--five-twelfths" style="text-align: left;">
+          <button type="button" class="text-link cart__note-add{% if noteSize > 0 %} is-hidden{% endif %}" style="font-weight: 500;">
+            Add a note to your order
+          </button>
+          <div class="cart__note{% if noteSize > 0 %} is-active{% endif %}">
+            <label for="CartSpecialInstructions" style="color:black;">{{ 'cart.general.note' | t }}</label>
+            <textarea name="note" class="input-full" id="CartSpecialInstructions" style="background: #e7e7e7;">{{ cart.note }}</textarea>
+          </div>
+        </div>
+        {% endif %}
+        <div class="grid__item text-right{% if settings.cart_notes_enable %} large--seven-twelfths{% endif %}">
+          <p>
+            <span class="cart__subtotal-title" style="font-weight: 500;">SUBTOTAL</span>
+            <span class="cart-item-text cart__subtotal" style="font-size: 25px;">{{ bold_cart_total_price | money }}</span>
+            {% if cart.total_discounts > 0 %}
+            {% assign savings = cart.total_discounts | money %}
+            <small class="cart-subtotal__savings">{{ 'cart.general.savings_html' | t: price: savings }}</small>
+            {% endif %}
+
+            <input name="shopify_customer_id" type="hidden" value="{{ customer.id }}" > 
+            <input name="email" type="hidden" value="{{ customer.email }}" > 
+            <input name="address1" type="hidden" value="{{ customer.default_address.address1 }}" > 
+            <input name="address2" type="hidden" value="{{ customer.default_address.address2 }}" > 
+            <input name="city" type="hidden" value="{{ customer.default_address.city }}" > 
+            <input name="company" type="hidden" value="{{ customer.default_address.company }}" > 
+            <input name="country" type="hidden" value="{{ customer.default_address.country }}" > 
+            <input name="first_name" type="hidden" value="{{ customer.default_address.first_name }}" > 
+            <input name="last_name" type="hidden" value="{{ customer.default_address.last_name }}" > 
+            <input name="phone" type="hidden" value="{{ customer.default_address.phone }}" > 
+            <input name="province" type="hidden" value="{{ customer.default_address.province }}" > 
+            <input name="zip" type="hidden" value="{{ customer.default_address.zip }}" >
+            {% include 'bold-ro-cart' %}
+          </p>
+
+          <div style="margin: 8px auto; font-weight: 500;">Applicable taxes will be applied at checkout. Your transaction is <span style="color:#336699;">safe & secure</span></div>
+
+          {{ bold_ro_cart }}
+
+          <!-- Route Code Edited 08/11/2020 
+          <div class="route-div" style="margin-top: -10px;"></div>
+          <div style="font-size: 12px; margin-top: -10px; margin-bottom: 15px; line-height: 15px;">*Premium insurance option that covers lost, stolen or damaged deliveries and<br> offers an easy claims process, keep "ON" for coverage.</div>
+          <!-- Route Code End -->
+
+          <input type="submit" name="update" style="color:white; background: #6a6a6a; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px;" value="UPDATE CART">
+          <input type="submit" name="checkout" style="color:white; background: #006600; border-radius: 0; width:100%; max-width:240px; margin:0 auto 15px;" value="CHECKOUT NOW">
+
+          {% if additional_checkout_buttons and show_paypal %}
+          <div class="additional-checkout-buttons">
+            {{ content_for_additional_checkout_buttons }}
+          </div>
+          {% endif %}
+         
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  {% else %}
+  {% comment %}
+  The cart is empty
+  {% endcomment %}
+  <div style="margin:50px auto; ">
+
+    <div style="font-size: 1.5em;">
+      <p>{{ 'cart.general.empty' | t }}</p>
+      <p>Continue browsing <a href="/collections/shop">here</a>.</p>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!------------ Recharge Subscription ------------------->
+{%  include 'subscription-cart-footer' %} 
+<!------------ END Recharge Subscription ------------------->
+
+<script>
+  $(document).on("click",".recurring_div, .one_time_div", function() {
+
+    if($('.recurring_div').hasClass('bold_active')){
+      $('.additional-checkout-buttons').hide();
+    }else{
+      $('.additional-checkout-buttons').show();
+    }
+  });
+
+</script>
+
+<!-- buy one get one free app -->
+<script>
+  jQuery('[max]').change(function() {
+    var max = parseInt(jQuery(this).attr('max'), 10);
+    if (isNaN(max)) {
+      return
+    }
+    var value = parseInt(jQuery(this).val(), 10) || 0;
+    if (value > max) { jQuery(this).val(max); }
+  });
+  /* change won't trigger on initial load */
+  jQuery('[max]').each(function() {
+    var max = parseInt(jQuery(this).attr('max'), 10);
+    if (isNaN(max)) {
+      return
+    }
+    var value = parseInt(jQuery(this).val(), 10) || 0;
+    if (value > max) { jQuery(this).val(max); }
+  });
+  if (typeof BuyXSubmit == "function") {
+    var buyx_checkout_selectors = ["input[name='checkout']", "button[name='checkout']", "input[name='goto_pp']", "button[name='goto_pp']", "input[name='goto_gc']", "button[name='goto_gc']", "[href$='checkout']", ".google-wallet-button-holder", ".amazon-payments-pay-button"];
+    window.buyx_cart_global = {{ cart | json }}
+      buyx_checkout_selectors.forEach(function(selector) {
+      jQuery(selector).bind("click", function() {
+        console.log("click")
+        return BuyXSubmit(window.buyx_cart_global, "updates_{key}");
+        //use appropriate selector for your theme, e.g. "input[data-id={variant_id}]"
+      })
+    });
+  }
+</script>
+
+<style>
+  .buyx-msg {
+    color: #F45B4F;
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  /*
+  .buyx-msg a {
+  color: #000000;
+  text-decoration: underline;
+  }
+  */
+  .buyx-msg:empty {
+    display: none;
+  }
+</style>
